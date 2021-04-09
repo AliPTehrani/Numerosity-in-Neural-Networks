@@ -326,5 +326,5 @@ def create_rsa_matrix(option, result_path):
 #RSA
 #create_rsa_matrix(1, "Alexnet results")
 
-x = compare_rdms("Alexnet random results_1\sub04\sess1_tr01_N3_S3_TFA1_J1.npz","Alexnet random results\sub04\sess1_tr01_N3_S3_TFA1_J1.npz")
-print(x)
+#x = compare_rdms("Alexnet random results_1\sub04\sess1_tr01_N3_S3_TFA1_J1.npz","Alexnet random results\sub04\sess1_tr01_N3_S3_TFA1_J1.npz")
+#print(x)

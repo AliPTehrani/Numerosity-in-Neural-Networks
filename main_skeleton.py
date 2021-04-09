@@ -1,6 +1,5 @@
 import generate_features as gf
 import generate_RDM as RDMs
-import helper
 import RDM_Evaluation
 import os
 from networks.alexnet import *
