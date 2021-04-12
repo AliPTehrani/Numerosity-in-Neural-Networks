@@ -50,7 +50,6 @@ def main():
         print("This might take a while please be patient.")
         gf.run_torchvision_model(model, result_path)
 
-
     # 3.) Generate RDMs
     generate_rdms = input("Generate RDMs ? Enter 1 for yes:")
     if generate_rdms == "1":

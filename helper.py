@@ -1,4 +1,4 @@
-import platform
+from sys import platform
 import numpy as np
 import glob
 import os

@@ -39,7 +39,6 @@ def get_images():
     path = "stimuli_jpg"
     images = glob.glob(path + "/**/*.jpg", recursive=True) # list all files
     images.sort()
-    print(images)
     return images
 
 
@@ -60,15 +59,15 @@ def run_torchvision_model(model, result_path):
         sep = helper.check_platform()  # depending on platform we have different seperators
         filename = image.split(sep)[-1].split(".")[0]
         filetype = image.split(sep)[-1].split(".")[1]
-        filefolder = image.split(sep)[0] + image.split(sep)[1]
         net_save_dir = os.path.join(result_path, image.split(sep)[1])
 
+        valid_type = False
         if filetype == "jpg":
             valid_type = True
             input_img = preprocess_image(image)  # preprocess the image
             x = model.forward(input_img)  # forward function of model
 
-        if valid_type == True:
+        if valid_type:
             """Save everything"""
             save_path = os.path.join(net_save_dir, filename + ".npz")
             feats = {}
