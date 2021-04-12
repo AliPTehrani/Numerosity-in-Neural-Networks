@@ -3,6 +3,7 @@ import generate_RDM as RDMs
 import RDM_Evaluation
 import os
 from networks.alexnet import *
+from networks.resnet import *
 import helper
 '''
 This file is used to run the main function.
@@ -22,6 +23,7 @@ def main():
     # 1.)Ask for model
     print("Please choose the Network.")
     print("Enter 1 for AlexNet")
+    print("Enter 2 for Resnet")
     model = input("Enter number for model:")
     random = input("Random weights (otherwise pretrained)? Enter 1 for random:")
 
@@ -33,6 +35,14 @@ def main():
         if random == "1":
             model = AlexNet(is_pretrained=False)
             result_path = "Alexnet random results"
+
+    if model == "2":
+        result_path = "Resnet pretrained results"
+        model = resnet18(pretrained=True)
+        if random == "1":
+            model = resnet18(pretrained=False)
+            result_path = "Resnet random results"
+
     # 2.) Generate features if not existing
     generate_features = input("Generate features ? Enter 1 for yes:")
     if generate_features == "1":

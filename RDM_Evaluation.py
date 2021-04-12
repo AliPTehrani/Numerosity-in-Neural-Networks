@@ -203,6 +203,9 @@ def multiple_regression_solo_averaged(path):
                 result_dict[layer_name] += mr_of_rdm
 
     # Divide to get average
+    standard_error = np.std(result_dict)
+    print("STANDARD ERROR:")
+    print(standard_error)
     for key in result_dict:
         result_dict[key] = result_dict[key] / 20
 

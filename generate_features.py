@@ -36,7 +36,7 @@ def preprocess_image(image):
 
 def get_images():
     """Return list of all stimuli"""
-    path = ".\\stimuli_jpg\\"
+    path = "stimuli_jpg"
     images = glob.glob(path + "/**/*.jpg", recursive=True) # list all files
     images.sort()
     print(images)
