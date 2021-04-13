@@ -1,4 +1,5 @@
 from prettytable import PrettyTable
+from prettytable import ALL as ALL
 import time
 from networks.alexnet import *
 from networks.resnet import *
@@ -6,6 +7,8 @@ import os
 import generate_features as gf
 import helper as helper
 import generate_RDM as RDMs
+import RDM_Evaluation
+from tqdm import tqdm
 '''
 This file is used to run the main function.
 Structure:
@@ -36,7 +39,8 @@ def represents_int(s):
 
 
 def create_pretty_table_networks():
-    p = PrettyTable()
+    p = PrettyTable(hrules=ALL)
+
     p.field_names = ["Configuration_Number", "Network", "Pretrained / Random Weights"]
     p.add_row(["1", "Alexnet", "Pretrained"])
     p.add_row(["2", "Alexnet", "Random Weights"])
@@ -54,6 +58,7 @@ def create_pretty_table_networks():
         last_row = (row.get_string(fields=["Configuration_Number"]).strip())
     last_row = (int(last_row))
     return [p, last_row]
+
 
 def get_model(config_number):
 
@@ -85,6 +90,7 @@ def get_save_path(config_number):
 
 
 def choose_model_main():
+
     network_table = create_pretty_table_networks()
     last_row = network_table[1]
     network_table = network_table[0]
@@ -106,7 +112,7 @@ def choose_model_main():
             model = get_model(config_number)
             save_path = get_save_path(config_number)
 
-        return [model, save_path]
+    return [model, save_path]
 
 
 def generate_features_main(model, save_path):
@@ -119,23 +125,77 @@ def generate_features_main(model, save_path):
         print("This might take a while please be patient.")
         gf.run_torchvision_model(model, save_path)
     else:
-        print("!!!Features will not be generated!!!")
+        print("WARNING: Features will not be generated!")
         time.sleep(5)
 
 
 def generate_rdms_main(save_path):
+
+    clear = Clear()
     list_of_subs = helper.get_sub_list()
     generate_rdms = input("Generate RDMs ? Enter 1 for yes:")
     if generate_rdms == "1":
-        print("RDMs will be created in " + save_path + " !")
-        for sub in list_of_subs:
+        print("RDMs will be created in: " + save_path )
+        for sub in tqdm(list_of_subs):
             RDMs.create_rdms(save_path, sub)
         RDMs.create_average_rdm(save_path)
         RDMs.visualize_rdms(save_path)
 
     else:
-        print("!!!RDMs will not be created!!!")
+        print("WARNING: RDMs will not be generated!")
         time.sleep(5)
+
+
+def multiple_regression_main(save_path):
+
+    clear = Clear()
+    create_multiple_regression_graph = input("Generate beta weights Graph (Multiple Regression)? Enter 1 for yes:")
+    if create_multiple_regression_graph == "1":
+        print("Option 1 : Yield beta weights from the averaged RDMs.")
+        print("Option 2 : Perform multiple regression for every subject layer. Average after.")
+        option = input("Please choose option (1/2):")
+
+        if option == "1":
+            save_path_2 = os.path.join(save_path, "average_results")
+            RDM_Evaluation.multiple_regression_average_results(save_path_2)
+            print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
+            option2 = input("Would you like to also create option 2? Enter 1 for yes:")
+            if option2 == "1":
+                RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+                print(
+                    "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
+
+        if option == "2":
+            save_path_2 = os.path.join(save_path, "average_results")
+            RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+            print("Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
+            option1 = input("Would you like to also create option 1? Enter 1 for yes:")
+            if option1 == "1":
+                RDM_Evaluation.multiple_regression_average_results(save_path_2)
+                print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
+
+
+def rsa_heatmap_main(save_path):
+
+    clear = Clear()
+    create_rsa_heatmap = input("Create RSA (Brain RDMs vs Network RDMs)? Enter 1 for yes:")
+
+    if create_rsa_heatmap == "1":
+
+        finished = 0
+        while finished == 0:
+            clear = Clear()
+            print("Choose option for brain rdms.")
+            print("Enter 1 for TaskBoth")
+            print("Enter 2 for TaskNum")
+            print("Enter 3 for TaskSize")
+            choose_option = input("Enter the option (1,2,3):")
+            choose_option = int(choose_option) - 1
+            RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
+            print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
+            finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
+            if int(finished_check) != 1:
+                finished = 1
 
 
 def main_ui():
@@ -149,6 +209,33 @@ def main_ui():
     generate_features_main(model, save_path)
 
     # 3.) Generate RDMs
-    generate_rdms_main(save_path)
+    try:
+        generate_rdms_main(save_path)
+    except FileNotFoundError:
+        print("WARNING: RDMS could not be created!")
+        print("Please make sure that features were created before.")
+
+    # 4.) Multiple Regression
+    try:
+        multiple_regression_main(save_path)
+    except FileNotFoundError:
+        print("WARNING: Multiple regression could not be performed!")
+        print("Please make sure that RDMs were created before")
+
+    # 5.) Create RSA heatmap
+    try:
+        rsa_heatmap_main(save_path)
+    except FileNotFoundError:
+        print("WARNING: RSA could not be performed!")
+        print("Please make sure that RDMs were generated before.")
+
+    # 6.) Delete activation files
+    delete_files_bool = input("Delete npz files to save memory? Enter 1 for yes:")
+    if delete_files_bool == "1":
+        print("NPZ files will be deleted!")
+        helper.delete_files(save_path)
+    else:
+        print("NPZ files will not be deleted!")
+
 
 main_ui()

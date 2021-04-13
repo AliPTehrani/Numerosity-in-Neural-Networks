@@ -9,7 +9,7 @@ from networks.alexnet import *
 from torch.autograd import Variable as V
 import glob
 import helper
-
+from tqdm import tqdm
 '''
 This file is used to generate the features of the Neural Network from all stimuli
 Functions:
@@ -54,7 +54,7 @@ def run_torchvision_model(model, result_path):
     #directory of results
     images = get_images()
 
-    for image in images:
+    for image in tqdm(images):
 
         sep = helper.check_platform()  # depending on platform we have different seperators
         filename = image.split(sep)[-1].split(".")[0]

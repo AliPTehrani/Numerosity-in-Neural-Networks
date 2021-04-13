@@ -152,10 +152,10 @@ def multiple_regression_average_results(results_path):
         value = results_dict[key]
         results_dict[key] = multiple_regression(value)
 
-    visualize_multiple_regression(results_dict,results_path)
+    visualize_multiple_regression(results_dict, results_path, "from averaged RDMs (Option1)", [])
 
 
-def visualize_multiple_regression(results_dict, save_path):
+def visualize_multiple_regression(results_dict, save_path, option, standard_error_dict):
     """Visualize and save multiple regression results"""
     x_coordinates = []
     y_coordinates = [[], [], [], [], []]  # Results for 5 predictors
@@ -171,14 +171,52 @@ def visualize_multiple_regression(results_dict, save_path):
     plt.plot(x_coordinates, y_coordinates[3], color = "grey" , marker = "s", label = "Total surface")
     plt.plot(x_coordinates, y_coordinates[4], color = "red",  marker = "v", label = "Density")
 
-    save_path = os.path.join(save_path, "beta_weights")
+    save_path = os.path.join(save_path, "beta_weights " + option)
 
     plt.xlabel("Layer")
     plt.ylabel("Weight")
     plt.title("Beta weights")
     plt.legend()
+
+    if standard_error_dict != []:
+        print("hellyea")
+
     plt.savefig(save_path)
     plt.close()
+
+def get_standard_error(standard_error_dict):
+    """
+    This function gets the standard error for the solo multiple regression function
+    Dictionary has the format:
+    {
+    layer1 : [[beta weights sub 1], [beta weights sub 2], ... ],
+    layer2:  [[beta weights sub 1], [beta weights sub 2], ... ],
+    ...
+     }
+    """
+    # 1.) Format dictionary to dictionary with format:
+    # { layer1 : [[predictor1 from sub 1 , p1 f s2 , p1 f3,...] , [predictor2 from sub1, p2 f s2,...],...], layer2: ...}
+    predictor_dict = {}
+    for layer in standard_error_dict:
+        predictor_dict[layer] = [[],[],[],[],[]]
+        for sub in standard_error_dict[layer]:
+            index = 0
+            for predictor in sub:
+                predictor_dict[layer][index].append(predictor)
+                index += 1
+
+    standard_error_result_dict = {}
+    # Remove first value from each
+    for layer in predictor_dict:
+        standard_error_result_dict[layer] = []
+        index = 0
+        for array in predictor_dict[layer]:
+
+            x = array.remove(array[0])
+            standard_error_result_dict[layer].append(np.std(array))
+            index += 1
+
+    return standard_error_result_dict
 
 def multiple_regression_solo_averaged(path):
     """This function performs multiple regression for every npz and then calculates the average and visualizes it"""
@@ -186,11 +224,12 @@ def multiple_regression_solo_averaged(path):
     sep = helper.check_platform()
     layer_path = path + sep + "sub04"
     layer_names = helper.get_layers_ncondns(layer_path)[1]
-
+    save_path = os.path.join(path, "average_results")
     result_dict = {}
+    standard_error = {}
     for layer_name in layer_names:
         result_dict[layer_name] = []
-
+        standard_error[layer_name] = []
     for sub in list_of_subs:
         sub_path = path + sep + sub + "_rdms"
         for layer_name in layer_names:
@@ -201,16 +240,15 @@ def multiple_regression_solo_averaged(path):
                 result_dict[layer_name] = mr_of_rdm
             else:
                 result_dict[layer_name] += mr_of_rdm
+            standard_error[layer_name].append(mr_of_rdm)
+
+    standard_error_dict = (get_standard_error(standard_error))
 
     # Divide to get average
-    standard_error = np.std(result_dict)
-    print("STANDARD ERROR:")
-    print(standard_error)
     for key in result_dict:
         result_dict[key] = result_dict[key] / 20
 
-
-    return result_dict
+    visualize_multiple_regression(result_dict, save_path, "from every subject (Option2)", standard_error_dict)
 
 def create_brain_region_rdm_dict(option):
     """
@@ -266,6 +304,7 @@ def create_network_layer_rdm_dict(result_path):
 
     return network_rdms_dictionary
 
+
 def visualize_rsa_matrix(result_dict,layer_list):
     rsa_matrix = []
     # Need dictionary reversed for visual matrix
@@ -314,15 +353,15 @@ def create_rsa_matrix(option, result_path):
             result_dict[brain_region].append(rsa_result)
 
     save_path = os.path.join(result_path, "average_results", "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
-    heatmap = visualize_rsa_matrix(result_dict, layer_list)
+    visualize_rsa_matrix(result_dict, layer_list)
     plt.savefig(save_path)
     plt.close()
 
 
 
 #OPTION 2:
-#result_dict = multiple_regression_solo_averaged("Alexnet results")
-#visualize_multiple_regression(result_dict,"Alexnet results")
+#result_dict = multiple_regression_solo_averaged("Alexnet pretrained results")
+
 #OPTION 1:
 #multiple_regression_average_results("Alexnet results\\average_rdms")
 
