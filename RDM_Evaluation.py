@@ -182,11 +182,10 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
         list_of_errors = []
         for layer in standard_error_dict:
             list_of_errors.append(standard_error_dict[key])
-    print(list_of_errors)
-
 
     plt.savefig(save_path)
     plt.close()
+
 
 def get_standard_error(standard_error_dict):
     """
