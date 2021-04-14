@@ -179,7 +179,11 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
     plt.legend()
 
     if standard_error_dict != []:
-        print("hellyea")
+        list_of_errors = []
+        for layer in standard_error_dict:
+            list_of_errors.append(standard_error_dict[key])
+    print(list_of_errors)
+
 
     plt.savefig(save_path)
     plt.close()

@@ -2,7 +2,18 @@ from prettytable import PrettyTable
 from prettytable import ALL as ALL
 import time
 from networks.alexnet import *
+from networks.cornet_rt import *
+from networks.cornet_s import *
+from networks.cornet_z import *
 from networks.resnet import *
+from networks.vgg11 import *
+from networks.vgg11_bn import *
+from networks.vgg13 import *
+from networks.vgg13_bn import *
+from networks.vgg16_bn import *
+from networks.vgg16 import *
+from networks.vgg19 import *
+from networks.vgg19_bn import *
 import os
 import generate_features as gf
 import helper as helper
@@ -39,55 +50,141 @@ def represents_int(s):
 
 
 def create_pretty_table_networks():
+    print("Network Table:")
     p = PrettyTable(hrules=ALL)
 
-    p.field_names = ["Configuration_Number", "Network", "Pretrained / Random Weights"]
-    p.add_row(["1", "Alexnet", "Pretrained"])
-    p.add_row(["2", "Alexnet", "Random Weights"])
-    p.add_row(["3", "cornet_rt", "Pretrained"])
-    p.add_row(["4", "cornet_rt", "Random Weights"])
-    p.add_row(["5", "cornet_s", "Pretrained"])
-    p.add_row(["6", "cornet_s", "Random Weights"])
-    p.add_row(["7", "resnet", "Pretrained"])
-    p.add_row(["8", "resnet", "Random Weights"])
+    p.field_names = ["ID", "Network"]
+    p.add_row(["1", "AlexNet"])
+    p.add_row(["2", "CorNet"])
+    p.add_row(["3", "ResNet"])
+    p.add_row(["4", "VGG"])
+
 
     last_row = 0
     for row in p:
         row.border = False
         row.header = False
-        last_row = (row.get_string(fields=["Configuration_Number"]).strip())
+        last_row = (row.get_string(fields=["ID"]).strip())
     last_row = (int(last_row))
     return [p, last_row]
 
+def create_pretty_table_network_configuration(ID):
+    p = PrettyTable(hrules=ALL)
+    p.field_names = ["ID", "Architecture", "Pretrained/Random"]
+    # ID 1 : Alexnet
+    if ID == "1":
+        print("Architecture Table for Alexnet:")
+        p.add_row(["1", "AlexNet", "Pretrained"])
+        p.add_row(["2", "AlexNet", "Random"])
 
-def get_model(config_number):
+    if ID == "2":
+        print("Architecture Table for Cornet:")
+        p.add_row(["1", "Cornet_rt", "Pretrained"])
+        p.add_row(["2", "Cornet_rt", "Random"])
+        p.add_row(["3", "Cornet_s", "Pretrained"])
+        p.add_row(["4", "Cornet_s", "Random"])
+        p.add_row(["5", "Cornet_z", "Pretrained"])
+        p.add_row(["6", "Cornet_z", "Random"])
 
-    if config_number == "1":
-        model = AlexNet(is_pretrained=True)
-    elif config_number == "2":
-        model = AlexNet(is_pretrained=False)
+    if ID == "3":
+        print("Architecture Table for Resnet:")
+        p.add_row(["1", "resnet18", "Pretrained"])
+        p.add_row(["2", "resnet18", "Random"])
+        p.add_row(["3", "resnet34", "Pretrained"])
+        p.add_row(["4", "resnet34", "Random"])
+        p.add_row(["5", "resnet50_load", "Pretrained"])
+        p.add_row(["6", "resnet50_load", "Random"])
+        p.add_row(["7", "resnet101", "Pretrained"])
+        p.add_row(["8", "resnet101", "Random"])
+        p.add_row(["9", "resnet152", "Pretrained"])
+        p.add_row(["10", "resnet152", "Random"])
 
-    elif config_number == "7":
-        model = resnet18(is_pretrained=True)
-    elif config_number == "8":
-        model = resnet18(is_pretrained=False)
+    if ID == "4":
+        print("Architecture Table for VGG:")
+        p.add_row(["1", "vgg11", "Pretrained"])
+        p.add_row(["2", "vgg11", "Random"])
+        p.add_row(["3", "vgg11_bn", "Pretrained"])
+        p.add_row(["4", "vgg11_bn", "Random"])
+        p.add_row(["5", "vgg13", "Pretrained"])
+        p.add_row(["6", "vgg13", "Random"])
+        p.add_row(["7", "vgg13_bn", "Pretrained"])
+        p.add_row(["8", "vgg13_bn", "Random"])
+        p.add_row(["9", "vgg16", "Pretrained"])
+        p.add_row(["10", "vgg16", "Random"])
+        p.add_row(["11", "vgg16_bn", "Pretrained"])
+        p.add_row(["12", "vgg16_bn", "Random"])
+        p.add_row(["13", "vgg19", "Pretrained"])
+        p.add_row(["14", "vgg19", "Random"])
+        p.add_row(["15", "vgg19_bn", "Pretrained"])
+        p.add_row(["16", "vgg19_bn", "Random"])
 
-    return model
+    last_row = 0
+    for row in p:
+        row.border = False
+        row.header = False
+        last_row = (row.get_string(fields=["ID"]).strip())
+    last_row = (int(last_row))
+    return [p, last_row]
 
+def get_model_and_save_path(model_id,setting_id):
+    model_index = int(model_id) - 1
+    setting_index = int(setting_id) - 1
 
-def get_save_path(config_number):
+    result = 0
+    if model_index == 0:
+        alexnet_setting = [[AlexNet(is_pretrained=True), "Alexnet pretrained results"],
+                           [AlexNet(is_pretrained=False), "Alexnet random results"]
+                           ]
+        result = alexnet_setting[setting_index]
 
-    if config_number == "1":
-        save_path = "Alexnet pretrained results"
-    elif config_number == "2":
-        save_path = "Alexnet random results"
-    elif config_number == "7":
-        save_path = "resnet18 pretrained results"
-    elif config_number == "8":
-        save_path = "resnet18 random results"
+    elif model_index == 1:
+        cornet_setting = [[cornet_rt(pretrained=True), "Cornet_rt pretrained results"],
+                          [cornet_rt(pretrained=False),"Cornet_rt random results"],
+                          [cornet_s(pretrained=True), "Cornet_s pretrained results"],
+                          [cornet_s(pretrained=False), "Cornet_s random results"],
+                          [cornet_z(pretrained=True), "Cornet_z pretrained results"],
+                          [cornet_z(pretrained=False), "Cornet_z random results"],
+                         ]
+        result = cornet_setting[setting_index]
+    elif model_index == 2:
+        resnet_setting = [[resnet18(pretrained=True), "Resnet18 pretrained results"],
+                          [resnet18(pretrained=False), "Resnet18 random results"],
+                          [resnet34(pretrained=True), "Resnet34 pretrained results"],
+                          [resnet34(pretrained=False), "Resnet34 random results"],
+                          [resnet50_load(pretrained=True), "Resnet50 pretrained results"],
+                          [resnet50_load(pretrained=False), "Resnet50 random results"],
+                          [resnet101(pretrained=True), "Resnet101 pretrained results"],
+                          [resnet101(pretrained=False), "Resnet101 random results"],
+                          [resnet152(pretrained=True), "Resnet152 pretrained results"],
+                          [resnet152(pretrained=False), "Resnet152 random results"]
+                         ]
+        result = resnet_setting[setting_index]
+    elif model_index == 3:
+        vgg_setting = [[VGG11Net(is_pretrained=True), "VGG11 pretrained results"],
+                       [VGG11Net(is_pretrained=False), "VGG11 random results"],
+                       [VGG11_bnNet(is_pretrained=True), "VGG11_bn pretrained results"],
+                       [VGG11_bnNet(is_pretrained=False), "VGG11_bn random results"],
+                       [VGG13Net(is_pretrained=True), "VGG13 pretrained results"],
+                       [VGG13Net(is_pretrained=False), "VGG13 random results"],
+                       [VGG13_bnNet(is_pretrained=True), "VGG13_bn pretrained results"],
+                       [VGG13_bnNet(is_pretrained=False), "VGG13_bn random results"],
+                       [VGG16Net(is_pretrained=True), "VGG16 pretrained results"],
+                       [VGG16Net(is_pretrained=False), "VGG16 random results"],
+                       [VGG16_bnNet(is_pretrained=True), "VGG16_bn pretrained results"],
+                       [VGG16_bnNet(is_pretrained=False), "VGG16_bn random results"],
+                       [VGG19Net(is_pretrained=True), "VGG19 pretrained results"],
+                       [VGG19Net(is_pretrained=False), "VGG19 random results"],
+                       [VGG19_bnNet(is_pretrained=True), "VGG19_bn pretrained results"],
+                       [VGG19_bnNet(is_pretrained=False), "VGG19_bn random results"],
+                      ]
+        result = vgg_setting[setting_index]
 
-    return save_path
+    if result == 0:
+        print("Warning: No network selected! UI will restart in 5 seconds!")
+        time.sleep(5)
+        main_ui()
 
+    return result
 
 def choose_model_main():
 
@@ -99,7 +196,7 @@ def choose_model_main():
     while not correct_input:
         clear = Clear()
         print(network_table)
-        config_number = input("Please enter the Configuration_Number from the tabel above:")
+        config_number = input("Please enter the ID of the Architecture from the table above:")
 
         if not represents_int(config_number):
             print("ERROR: Please enter an number!")
@@ -109,8 +206,31 @@ def choose_model_main():
             time.sleep(5)
         else:
             correct_input = True
-            model = get_model(config_number)
-            save_path = get_save_path(config_number)
+
+    model_id = config_number
+
+    setting_table = create_pretty_table_network_configuration(model_id)
+    last_row = setting_table[1]
+    setting_table = setting_table[0]
+    correct_input_2 = False
+
+    while not correct_input_2:
+        clear = Clear()
+
+        print(setting_table)
+        setting_number = input("Please enter the ID of the Architecture-Setting from the table above:")
+
+        if not represents_int(setting_number):
+            print("ERROR: Please enter an number!")
+            time.sleep(5)
+        elif (int(setting_number) < 1) or (int(setting_number) > last_row):
+            print("ERROR: Please enter an number between 1 and " + str(last_row) + " !")
+            time.sleep(5)
+        else:
+            correct_input_2 = True
+            result = get_model_and_save_path(model_id,setting_number)
+            model = result[0]
+            save_path = result[1]
 
     return [model, save_path]
 
