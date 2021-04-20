@@ -3,6 +3,7 @@ import os
 import glob
 import matplotlib.pyplot as plt
 import helper
+import seaborn as sns
 
 
 def sum_tensors(all_tensors, x):
@@ -264,15 +265,21 @@ def visualize_rdms(result_path):
 
             rdm = np.load(path)
             rdm = rdm.f.arr_0
-            fig = plt.figure(figsize=(8,6))
-            plt.imshow(rdm, cmap="inferno")
-            plt.title("RDM")
-            plt.colorbar()
-            save_path = path[:-4]
+            #fig = plt.figure(figsize=(8,6))
+            #plt.imshow(rdm, cmap="inferno")
+            test_cases_dict = helper.get_test_cases()
+            test_cases = []
+            for test_case in test_cases_dict:
+                test_cases.append(test_case)
 
+            plt.title("RDM of layer: " + layer)
+            save_path = path[:-4]
+            fig, ax = plt.subplots(figsize=(11, 9))
+            plt.title("RDM of layer: " + layer)
+            sns.heatmap(rdm, xticklabels=test_cases, yticklabels=test_cases, cmap="inferno", vmin=0, vmax=1,
+                        cbar_kws={'label': '1-Pearson r'})
             plt.savefig(save_path)
             plt.close()
 
 
-
-
+visualize_rdms("Alexnet pretrained results")

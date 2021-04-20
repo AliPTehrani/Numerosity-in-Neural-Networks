@@ -173,15 +173,16 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
 
     save_path = os.path.join(save_path, "beta_weights " + option)
 
-    plt.xlabel("Layer")
-    plt.ylabel("Weight")
-    plt.title("Beta weights")
+    plt.xlabel("layer")
+    plt.ylabel("beta weights")
+    plt.title("Multiple regression on layer RDMs")
     plt.legend()
 
     if standard_error_dict != []:
         list_of_errors = []
         for layer in standard_error_dict:
-            list_of_errors.append(standard_error_dict[key])
+            list_of_errors.append(standard_error_dict[layer])
+    print(standard_error_dict)
 
     plt.savefig(save_path)
     plt.close()
@@ -308,21 +309,20 @@ def create_network_layer_rdm_dict(result_path):
     return network_rdms_dictionary
 
 
-def visualize_rsa_matrix(result_dict,layer_list):
+def visualize_rsa_matrix(result_dict,layer_list, option):
     rsa_matrix = []
     # Need dictionary reversed for visual matrix
-    reverse_list = []
-    for brain_region in result_dict:
-        reverse_list.append(brain_region)
-    reverse_list.reverse()
-    for brain_region in reverse_list:
+    brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
+
+    for brain_region in brain_regions:
         rsa_matrix.append(result_dict[brain_region])
     rsa_matrix = np.array(rsa_matrix)
     # Visualize
     layers = layer_list
-    brain_regions = reverse_list
 
-    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions,cmap="inferno",vmin = 0, vmax=1)
+    plt.title("brain - network RDM similarity: " + option)
+    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=0,
+                          vmax=1, cbar_kws={'label': '1-Pearson r'})
     return heatmap
 
 
@@ -356,7 +356,7 @@ def create_rsa_matrix(option, result_path):
             result_dict[brain_region].append(rsa_result)
 
     save_path = os.path.join(result_path, "average_results", "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
-    visualize_rsa_matrix(result_dict, layer_list)
+    visualize_rsa_matrix(result_dict, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
     plt.savefig(save_path)
     plt.close()
 
@@ -369,7 +369,7 @@ def create_rsa_matrix(option, result_path):
 #multiple_regression_average_results("Alexnet results\\average_rdms")
 
 #RSA
-#create_rsa_matrix(1, "Alexnet results")
+create_rsa_matrix(1, "Alexnet pretrained results")
 
 #x = compare_rdms("Alexnet random results_1\sub04\sess1_tr01_N3_S3_TFA1_J1.npz","Alexnet random results\sub04\sess1_tr01_N3_S3_TFA1_J1.npz")
 #print(x)
