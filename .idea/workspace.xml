@@ -21,9 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generate_RDM.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_RDM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Google Colab/ImportProjectToColab.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Google Colab/ImportProjectToColab.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +187,7 @@
       <workItem from="1619163461628" duration="13000" />
       <workItem from="1619180507364" duration="595000" />
       <workItem from="1619185030889" duration="4100000" />
-      <workItem from="1619255264543" duration="15170000" />
+      <workItem from="1619255264543" duration="15284000" />
     </task>
     <servers />
   </component>
