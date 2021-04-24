@@ -126,6 +126,7 @@ def create_pretty_table_network_configuration(ID):
     last_row = (int(last_row))
     return [p, last_row]
 
+
 def get_model_and_save_path(model_id,setting_id):
     model_index = int(model_id) - 1
     setting_index = int(setting_id) - 1
@@ -135,49 +136,81 @@ def get_model_and_save_path(model_id,setting_id):
         alexnet_setting = [[AlexNet(is_pretrained=True), "Alexnet pretrained results"],
                            [AlexNet(is_pretrained=False), "Alexnet random results"]
                            ]
+
         result = alexnet_setting[setting_index]
 
     elif model_index == 1:
-        cornet_setting = [[cornet_rt(pretrained=True), "Cornet_rt pretrained results"],
-                          [cornet_rt(pretrained=False),"Cornet_rt random results"],
-                          [cornet_s(pretrained=True), "Cornet_s pretrained results"],
-                          [cornet_s(pretrained=False), "Cornet_s random results"],
-                          [cornet_z(pretrained=True), "Cornet_z pretrained results"],
-                          [cornet_z(pretrained=False), "Cornet_z random results"],
-                         ]
-        result = cornet_setting[setting_index]
+
+        if setting_index == 0:
+            result = [cornet_rt(pretrained=True), "Cornet_rt pretrained results"]
+        elif setting_index == 1:
+            result = [cornet_rt(pretrained=False),"Cornet_rt random results"]
+        elif setting_index == 2:
+            result = [cornet_s(pretrained=True),"Cornet_s pretrained results"]
+        elif setting_index == 3:
+            result = [cornet_s(pretrained=False),"Cornet_s random results"]
+        elif setting_index == 4:
+            result = [cornet_z(pretrained=True),"Cornet_z pretrained results"]
+        elif setting_index == 5:
+            result = [cornet_z(pretrained=False), "Cornet_z random results"]
+
     elif model_index == 2:
-        resnet_setting = [[resnet18(pretrained=True), "Resnet18 pretrained results"],
-                          [resnet18(pretrained=False), "Resnet18 random results"],
-                          [resnet34(pretrained=True), "Resnet34 pretrained results"],
-                          [resnet34(pretrained=False), "Resnet34 random results"],
-                          [resnet50_load(pretrained=True), "Resnet50 pretrained results"],
-                          [resnet50_load(pretrained=False), "Resnet50 random results"],
-                          [resnet101(pretrained=True), "Resnet101 pretrained results"],
-                          [resnet101(pretrained=False), "Resnet101 random results"],
-                          [resnet152(pretrained=True), "Resnet152 pretrained results"],
-                          [resnet152(pretrained=False), "Resnet152 random results"]
-                         ]
-        result = resnet_setting[setting_index]
+
+        if setting_index == 0:
+            result = [resnet18(pretrained=True), "Resnet18 pretrained results"]
+        elif setting_index == 1:
+            result = [resnet18(pretrained=False), "Resnet18 random results"],
+        elif setting_index == 2:
+            result = [resnet34(pretrained=True), "Resnet34 pretrained results"]
+        elif setting_index == 3:
+            result = [resnet34(pretrained=False), "Resnet34 random results"]
+        elif setting_index == 4:
+            result = [resnet50_load(pretrained=True), "Resnet50 pretrained results"]
+        elif setting_index == 5:
+            result = [resnet50_load(pretrained=False), "Resnet50 random results"]
+        elif setting_index == 6:
+            result = [resnet101(pretrained=True), "Resnet101 pretrained results"]
+        elif setting_index == 7:
+            result = [resnet101(pretrained=False), "Resnet101 random results"]
+        elif setting_index == 8:
+            result = [resnet152(pretrained=True), "Resnet152 pretrained results"]
+        elif setting_index == 9:
+            result = [resnet152(pretrained=False), "Resnet152 random results"]
+
     elif model_index == 3:
-        vgg_setting = [[VGG11Net(is_pretrained=True), "VGG11 pretrained results"],
-                       [VGG11Net(is_pretrained=False), "VGG11 random results"],
-                       [VGG11_bnNet(is_pretrained=True), "VGG11_bn pretrained results"],
-                       [VGG11_bnNet(is_pretrained=False), "VGG11_bn random results"],
-                       [VGG13Net(is_pretrained=True), "VGG13 pretrained results"],
-                       [VGG13Net(is_pretrained=False), "VGG13 random results"],
-                       [VGG13_bnNet(is_pretrained=True), "VGG13_bn pretrained results"],
-                       [VGG13_bnNet(is_pretrained=False), "VGG13_bn random results"],
-                       [VGG16Net(is_pretrained=True), "VGG16 pretrained results"],
-                       [VGG16Net(is_pretrained=False), "VGG16 random results"],
-                       [VGG16_bnNet(is_pretrained=True), "VGG16_bn pretrained results"],
-                       [VGG16_bnNet(is_pretrained=False), "VGG16_bn random results"],
-                       [VGG19Net(is_pretrained=True), "VGG19 pretrained results"],
-                       [VGG19Net(is_pretrained=False), "VGG19 random results"],
-                       [VGG19_bnNet(is_pretrained=True), "VGG19_bn pretrained results"],
-                       [VGG19_bnNet(is_pretrained=False), "VGG19_bn random results"],
-                      ]
-        result = vgg_setting[setting_index]
+
+        if setting_index == 0:
+            result = [VGG11Net(is_pretrained=True), "VGG11 pretrained results"]
+        elif setting_index == 1:
+            result = [VGG11Net(is_pretrained=False), "VGG11 random results"],
+        elif setting_index == 2:
+            result = [VGG11_bnNet(is_pretrained=True), "VGG11_bn pretrained results"]
+        elif setting_index == 3:
+            result = [VGG11_bnNet(is_pretrained=False), "VGG11_bn random results"]
+        elif setting_index == 4:
+            result = [VGG13Net(is_pretrained=True), "VGG13 pretrained results"]
+        elif setting_index == 5:
+            result = [VGG13Net(is_pretrained=False), "VGG13 random results"]
+        elif setting_index == 6:
+            result = [VGG13_bnNet(is_pretrained=True), "VGG13_bn pretrained results"]
+        elif setting_index == 7:
+            result = [VGG13_bnNet(is_pretrained=False), "VGG13_bn random results"]
+        elif setting_index == 8:
+            result = [VGG16Net(is_pretrained=True), "VGG16 pretrained results"]
+        elif setting_index == 9:
+            result = [VGG16Net(is_pretrained=False), "VGG16 random results"]
+        elif setting_index == 10:
+            result = [VGG16_bnNet(is_pretrained=True), "VGG16_bn pretrained results"]
+        elif setting_index == 11:
+            result = [VGG16_bnNet(is_pretrained=False), "VGG16_bn random results"]
+        elif setting_index == 12:
+            result = [VGG19Net(is_pretrained=True), "VGG19 pretrained results"]
+        elif setting_index == 13:
+            result = [VGG19Net(is_pretrained=False), "VGG19 random results"]
+        elif setting_index == 14:
+            result = [VGG19_bnNet(is_pretrained=True), "VGG19_bn pretrained results"]
+        elif setting_index == 15:
+            result = [VGG19_bnNet(is_pretrained=False), "VGG19_bn random results"]
 
     if result == 0:
         print("Warning: No network selected! UI will restart in 5 seconds!")
@@ -185,6 +218,7 @@ def get_model_and_save_path(model_id,setting_id):
         main_ui()
 
     return result
+
 
 def choose_model_main():
 

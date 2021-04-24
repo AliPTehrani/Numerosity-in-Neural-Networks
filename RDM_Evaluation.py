@@ -50,9 +50,6 @@ def compare_rdms(rdm_path1,rdm_path2):
         rdm1 = loadednpz1.f.arr_0
         rdm2 = loadednpz2.f.arr_0
 
-    # Extract array (rdm) from npz
-
-
     # Get lower triangle of rdm
     rdm1 = get_lowertriangular(rdm1)
     rdm2 = get_lowertriangular(rdm2)
@@ -182,7 +179,7 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
         list_of_errors = []
         for layer in standard_error_dict:
             list_of_errors.append(standard_error_dict[layer])
-    print(standard_error_dict)
+    #print(standard_error_dict)
 
     plt.savefig(save_path)
     plt.close()
@@ -320,9 +317,10 @@ def visualize_rsa_matrix(result_dict,layer_list, option):
     # Visualize
     layers = layer_list
 
-    plt.title("brain - network RDM similarity: " + option)
-    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=0,
-                          vmax=1, cbar_kws={'label': '1-Pearson r'})
+    plt.title("brain - network RDM similarity: " + option, fontsize = 15)
+    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=-1,
+                          vmax=1, cbar_kws={'label': 'Spearman correlation coefficient'})
+    heatmap.figure.axes[-1].yaxis.label.set_size(13)
     return heatmap
 
 
@@ -369,7 +367,7 @@ def create_rsa_matrix(option, result_path):
 #multiple_regression_average_results("Alexnet results\\average_rdms")
 
 #RSA
-create_rsa_matrix(1, "Alexnet pretrained results")
+#create_rsa_matrix(1, "Alexnet pretrained results")
 
 #x = compare_rdms("Alexnet random results_1\sub04\sess1_tr01_N3_S3_TFA1_J1.npz","Alexnet random results\sub04\sess1_tr01_N3_S3_TFA1_J1.npz")
 #print(x)
