@@ -65,7 +65,7 @@ def get_layers_ncondns(feat_dir):
     Returns: Amount of Images"""
     activations = glob.glob(feat_dir + "/*.npz")
     num_condns = len(activations)
-    feat = np.load(activations[0],allow_pickle=True)
+    feat = np.load(activations[0], allow_pickle=True)
 
     num_layers = 0
     layer_list = []

@@ -250,7 +250,7 @@ def visualize_rdms(result_path):
     list_of_subs = helper.get_sub_list()
     list_of_subs.append("average_results")
     # Get names of the layers
-    path = result_path + "\\" + "sub04"
+    path = result_path + helper.check_platform() + "sub04"
     layer_names = helper.get_layers_ncondns(path)[1]
 
     # For every subject

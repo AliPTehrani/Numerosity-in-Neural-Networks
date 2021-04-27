@@ -348,8 +348,11 @@ def rsa_heatmap_main(save_path):
             RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
             print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
             finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
-            if int(finished_check) != 1:
+            if not represents_int(finished_check):
                 finished = 1
+            elif int(finished_check) != 1:
+                finished = 1
+
 
 
 def main_ui():
