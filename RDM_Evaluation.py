@@ -271,7 +271,13 @@ def create_brain_region_rdm_dict(option):
     option = ["taskBoth", "taskNum", "taskSize"][option - 1]
     # All rsa_files as npz
     #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
-    all_rsa_files = glob.glob("RSA_Matrices" + "/**/*.npz", recursive=True)
+    #network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
+    #average_results = result_path + sep + "average_results"
+    all_rsa_files = glob.glob("RSA_Matrices" + "/*" + ".npz")
+
+
+
+    print(all_rsa_files)
     filtered_files = []
     brain_rdms_dictionary = {}
     # Filter them on the correct option
@@ -304,7 +310,7 @@ def create_network_layer_rdm_dict(result_path):
 
     sep = helper.check_platform()
     average_results = result_path + sep + "average_results"
-    network_rdms = glob.glob(average_results + "/**/*.npz",recursive=True)
+    network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
     network_rdms_dictionary = {}
     for network_rdm in network_rdms:
         layer_name = network_rdm.split(helper.check_platform())[-1].split(".")[0]

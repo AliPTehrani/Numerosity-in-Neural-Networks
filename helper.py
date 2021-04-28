@@ -52,6 +52,8 @@ def check_platform():
     """depending on its platform we have different separators"""
     if platform == "linux" or platform == "linux2":
         sep = "/"
+    elif platform == "darwin":
+        sep = "\\"
     else:
         sep = "\\"
 
