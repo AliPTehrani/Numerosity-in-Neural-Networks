@@ -207,7 +207,7 @@ def create_average_rdm(result_path):
     list_of_subs = helper.get_sub_list()
 
     # Get the names for all layers of the network
-    path = result_path + "\\" + "sub04"
+    path = result_path + helper.check_platform() + "sub04"
     layer_names = helper.get_layers_ncondns(path)[1]
 
     for layer in layer_names:

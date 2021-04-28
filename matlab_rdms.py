@@ -21,7 +21,7 @@ def visualize_rdm(rdm, npz_save_dir, filename):
         plt.title("Matrix of " + filename + "Number: " + str(number_of_matrix))
         plt.colorbar()
         save_path = os.path.join(npz_save_dir,filename + "Matrix " + str(number_of_matrix))
-        plt.savefig((save_path))
+        plt.savefig(save_path)
         number_of_matrix += 1
 
 

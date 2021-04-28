@@ -84,7 +84,8 @@ def multiple_regression(rdm):
     loaded_npz = rdm
 
     # Load predictor matrices
-    predictor_npz_1 = helper.loadnpz("RSA_matrices\\all_RDM_predictors\\all_RDM_predictors.npz")
+    sep = helper.check_platform()
+    predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep + "all_RDM_predictors" + "all_RDM_predictors.npz")
 
     # Extract array (rdm) from npz
     rdm = loaded_npz.f.arr_0
