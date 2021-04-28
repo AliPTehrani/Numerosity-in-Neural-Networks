@@ -303,6 +303,7 @@ def generate_rdms_main(save_path):
 def multiple_regression_main(save_path):
 
     clear = Clear()
+    sep = helper.check_platform()
     create_multiple_regression_graph = input("Generate beta weights Graph (Multiple Regression)? Enter 1 for yes:")
     if create_multiple_regression_graph == "1":
         print("Option 1 : Yield beta weights from the averaged RDMs.")
@@ -310,7 +311,8 @@ def multiple_regression_main(save_path):
         option = input("Please choose option (1/2):")
 
         if option == "1":
-            save_path_2 = os.path.join(save_path, "average_results")
+
+            save_path_2 = save_path + sep + "average_results"
             RDM_Evaluation.multiple_regression_average_results(save_path_2)
             print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
             option2 = input("Would you like to also create option 2? Enter 1 for yes:")
@@ -320,7 +322,7 @@ def multiple_regression_main(save_path):
                     "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
 
         if option == "2":
-            save_path_2 = os.path.join(save_path, "average_results")
+            save_path_2 = save_path + sep + "average_results"
             RDM_Evaluation.multiple_regression_solo_averaged(save_path)
             print("Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
             option1 = input("Would you like to also create option 1? Enter 1 for yes:")
@@ -373,11 +375,11 @@ def main_ui():
         print("Please make sure that features were created before.")
 
     # 4.) Multiple Regression
-    try:
-        multiple_regression_main(save_path)
-    except FileNotFoundError:
-        print("WARNING: Multiple regression could not be performed!")
-        print("Please make sure that RDMs were created before")
+    #try:
+    multiple_regression_main(save_path)
+    #except FileNotFoundError:
+    #    print("WARNING: Multiple regression could not be performed!")
+    #    print("Please make sure that RDMs were created before")
 
     # 5.) Create RSA heatmap
     try:

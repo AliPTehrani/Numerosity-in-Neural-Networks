@@ -85,7 +85,7 @@ def multiple_regression(rdm):
 
     # Load predictor matrices
     sep = helper.check_platform()
-    predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep + "all_RDM_predictors" + "all_RDM_predictors.npz")
+    predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep + "all_RDM_predictors" + sep + "all_RDM_predictors.npz")
 
     # Extract array (rdm) from npz
     rdm = loaded_npz.f.arr_0
@@ -163,13 +163,14 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
         for index in range(0,5):
             y_coordinates[index].append(results_dict[key][index])
 
-    plt.plot(x_coordinates, y_coordinates[0], color = "black", marker = "^", label = "Number")
-    plt.plot(x_coordinates, y_coordinates[1], color = "grey", marker = "o", label = "Average Item Size")
-    plt.plot(x_coordinates, y_coordinates[2], color = "green", marker = "D", label = "Total field Area")
-    plt.plot(x_coordinates, y_coordinates[3], color = "grey" , marker = "s", label = "Total surface")
-    plt.plot(x_coordinates, y_coordinates[4], color = "red",  marker = "v", label = "Density")
+    plt.plot(x_coordinates, y_coordinates[0], color="black", marker="^", label="Number")
+    plt.plot(x_coordinates, y_coordinates[1], color="grey", marker="o", label="Average Item Size")
+    plt.plot(x_coordinates, y_coordinates[2], color="green", marker="D", label="Total field Area")
+    plt.plot(x_coordinates, y_coordinates[3], color="grey" , marker="s", label="Total surface")
+    plt.plot(x_coordinates, y_coordinates[4], color="red",  marker="v", label="Density")
 
-    save_path = os.path.join(save_path, "beta_weights " + option)
+    sep = helper.check_platform()
+    save_path = save_path + sep + "beta_weights " + option
 
     plt.xlabel("layer")
     plt.ylabel("beta weights")
@@ -226,7 +227,7 @@ def multiple_regression_solo_averaged(path):
     sep = helper.check_platform()
     layer_path = path + sep + "sub04"
     layer_names = helper.get_layers_ncondns(layer_path)[1]
-    save_path = os.path.join(path, "average_results")
+    save_path = path + sep + "average_results"
     result_dict = {}
     standard_error = {}
     for layer_name in layer_names:
@@ -295,7 +296,8 @@ def create_brain_region_rdm_dict(option):
 def create_network_layer_rdm_dict(result_path):
     """Returns dictionary with {layer : rdm, ... } for the average rdms of the network"""
 
-    average_results = os.path.join(result_path, "average_results")
+    sep = helper.check_platform()
+    average_results = result_path + sep + "average_results"
     network_rdms = glob.glob(average_results + "/**/*.npz",recursive=True)
     network_rdms_dictionary = {}
     for network_rdm in network_rdms:
@@ -354,7 +356,8 @@ def create_rsa_matrix(option, result_path):
             rsa_result = compare_rdms(network_rdm,brain_rdm)
             result_dict[brain_region].append(rsa_result)
 
-    save_path = os.path.join(result_path, "average_results", "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
+    sep = helper.check_platform()
+    save_path = (result_path + sep + "average_results" + sep + "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
     visualize_rsa_matrix(result_dict, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
     plt.savefig(save_path)
     plt.close()

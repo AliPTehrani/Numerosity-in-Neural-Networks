@@ -78,7 +78,8 @@ def average_all_npz(result_path, sub):
     Uses a dictionary to calculate
     Returns: dictionary of average layer values
     """
-    path = os.path.join(result_path, sub)
+    sep = helper.check_platform()
+    path = result_path + sep + sub
 
     # Array with all test cases
 
