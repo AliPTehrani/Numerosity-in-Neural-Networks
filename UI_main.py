@@ -375,11 +375,11 @@ def main_ui():
         print("Please make sure that features were created before.")
 
     # 4.) Multiple Regression
-    #try:
-    multiple_regression_main(save_path)
-    #except FileNotFoundError:
-    #    print("WARNING: Multiple regression could not be performed!")
-    #    print("Please make sure that RDMs were created before")
+    try:
+        multiple_regression_main(save_path)
+    except FileNotFoundError:
+        print("WARNING: Multiple regression could not be performed!")
+        print("Please make sure that RDMs were created before")
 
     # 5.) Create RSA heatmap
     try:

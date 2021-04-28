@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import glob
 import matplotlib.pyplot as plt
 import helper
 import seaborn as sns
@@ -94,11 +93,11 @@ def average_all_npz(result_path, sub):
         # If frequency == 0: sum tensors on empty list
         if position_and_frequency[test_case_of_npz][1] == 0:
             position_and_frequency[test_case_of_npz][0] = sum_tensors([],
-                                                               helper.loadnpz(os.path.join(path,file_name)))
+                                                               helper.loadnpz(path+ sep + file_name))
         # If frequency /= 0: sum tensors
         else:
             position_and_frequency[test_case_of_npz][0] = sum_tensors(position_and_frequency[test_case_of_npz][0],
-                                                               helper.loadnpz(os.path.join(path,file_name)))
+                                                               helper.loadnpz(path + sep + file_name))
 
         # Count frequency
         position_and_frequency[test_case_of_npz][1] += 1
@@ -210,11 +209,11 @@ def create_average_rdm(result_path):
     # Get the names for all layers of the network
     path = result_path + helper.check_platform() + "sub04"
     layer_names = helper.get_layers_ncondns(path)[1]
-
+    sep = helper.check_platform()
     for layer in layer_names:
         result_array = 0
         for sub in list_of_subs:
-            layer_path = os.path.join(result_path, sub+"_rdms", layer + ".npz")
+            layer_path = result_path + sep + sub+"_rdms" + sep + layer + ".npz"
             loaded_npz = helper.loadnpz(layer_path)
             result_array += loaded_npz.f.arr_0
 
@@ -222,7 +221,7 @@ def create_average_rdm(result_path):
         save_path = os.path.join(result_path, "average_results")
         if not os.path.exists(save_path):
             os.makedirs(save_path)
-        np.savez(os.path.join(save_path, layer + ".npz"), result_array)
+        np.savez((save_path + sep + layer + ".npz"), result_array)
 
 
 def create_rdms(result_path, sub):
@@ -233,16 +232,17 @@ def create_rdms(result_path, sub):
     2.) Scale
     3.) Calculate pearson coefficient
     """
+    sep = helper.check_platform()
     layers_dict = average_all_npz(result_path, sub)
     scaled_layers = scale_arrays(layers_dict)
-    net_save_dir = os.path.join(result_path, sub + "_rdms")
+    net_save_dir = result_path + sep + sub + "_rdms"
 
     if not os.path.exists(net_save_dir):
         os.makedirs(net_save_dir)
 
     for layer in layers_dict:
         rdm = pearson_coefficient(scaled_layers[layer])
-        save_path = os.path.join(result_path, sub + "_rdms", layer)
+        save_path = result_path + sep + sub + "_rdms" + sep + layer
         np.savez(save_path, rdm)
 
 

@@ -131,7 +131,11 @@ def multiple_regression(rdm):
 
 def read_in_npz_files(path):
     """This function reads in all npz files from a path into an dictionary"""
-    npz_files = glob.glob(path + "/**/*.npz", recursive=True)
+    #npz_files = glob.glob(path + "/**/*.npz", recursive=True)
+    npz_files = glob.glob(path + "/*.npz")
+
+    print(path)
+    print(npz_files)
     loaded_npz_dict = {}
     for npz_file in npz_files:
         sep = helper.check_platform()
@@ -263,9 +267,11 @@ def create_brain_region_rdm_dict(option):
     """
 
     # Get option as filter to search for correct npz files
+    sep = helper.check_platform()
     option = ["taskBoth", "taskNum", "taskSize"][option - 1]
     # All rsa_files as npz
-    all_rsa_files = images = glob.glob("RSA_Matrices" + "/**/*.npz", recursive=True)
+    #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
+    all_rsa_files = glob.glob("RSA_Matrices" + "/**/*.npz", recursive=True)
     filtered_files = []
     brain_rdms_dictionary = {}
     # Filter them on the correct option
