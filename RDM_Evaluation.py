@@ -85,7 +85,7 @@ def multiple_regression(rdm):
 
     # Load predictor matrices
     sep = helper.check_platform()
-    predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep + "all_RDM_predictors" + sep + "all_RDM_predictors.npz")
+    predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep  + "all_RDM_predictors.npz")
 
     # Extract array (rdm) from npz
     rdm = loaded_npz.f.arr_0
@@ -134,8 +134,6 @@ def read_in_npz_files(path):
     #npz_files = glob.glob(path + "/**/*.npz", recursive=True)
     npz_files = glob.glob(path + "/*.npz")
 
-    print(path)
-    print(npz_files)
     loaded_npz_dict = {}
     for npz_file in npz_files:
         sep = helper.check_platform()
@@ -149,12 +147,15 @@ def read_in_npz_files(path):
 def multiple_regression_average_results(results_path):
     """Function to perform multiple regression on all values inside of the dictionary results_dict"""
     results_dict = read_in_npz_files(results_path)
-
-    for key in results_dict:
+    sorted_dict = {}
+    sep = helper.check_platform()
+    layer_path = results_path.split(sep)[0] + sep + "sub04"
+    layer_names = helper.get_layers_ncondns(layer_path)[1]
+    for key in layer_names:
         value = results_dict[key]
         results_dict[key] = multiple_regression(value)
-
-    visualize_multiple_regression(results_dict, results_path, "from averaged RDMs (Option1)", [])
+        sorted_dict[key] = results_dict[key]
+    visualize_multiple_regression(sorted_dict, results_path, "from averaged RDMs (Option1)", [])
 
 
 def visualize_multiple_regression(results_dict, save_path, option, standard_error_dict):
@@ -273,11 +274,14 @@ def create_brain_region_rdm_dict(option):
     #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
     #network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
     #average_results = result_path + sep + "average_results"
-    all_rsa_files = glob.glob("RSA_Matrices" + "/*" + ".npz")
+    cwd = os.getcwd()
+    search_path = os.getcwd() + sep + "RSA_matrices"
+    all_rsa_files = glob.glob(search_path + "/*" + ".npz")
 
 
 
-    print(all_rsa_files)
+
+
     filtered_files = []
     brain_rdms_dictionary = {}
     # Filter them on the correct option
@@ -288,8 +292,9 @@ def create_brain_region_rdm_dict(option):
     for filtered_file in filtered_files:
         average_rdm = []
         loadednpz = helper.loadnpz(filtered_file)
-        filename = filtered_file.split(helper.check_platform())[1]
-        brain_region = (filename.split("_")[3])
+        filename = filtered_file.split(helper.check_platform())[-1]
+        brain_region = filename.split("_")
+        brain_region = brain_region[-1].split(".")[0]
         # loaded npz is a 20x18x18 array
         if (np.shape(loadednpz.f.arr_0)) == (20, 18, 18):
             # needs to be averaged
@@ -310,7 +315,9 @@ def create_network_layer_rdm_dict(result_path):
 
     sep = helper.check_platform()
     average_results = result_path + sep + "average_results"
-    network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
+    search_path = average_results + "/*" + ".npz"
+    network_rdms = glob.glob(search_path, recursive=True)
+
     network_rdms_dictionary = {}
     for network_rdm in network_rdms:
         layer_name = network_rdm.split(helper.check_platform())[-1].split(".")[0]
@@ -350,20 +357,17 @@ def create_rsa_matrix(option, result_path):
     brain_rdms = create_brain_region_rdm_dict(option)
     # Creating a dictionary for the RDMs of the layers from the network
     network_rdms = create_network_layer_rdm_dict(result_path)
-
-    # Comparing average brain rdms to average network rdms (brain region vs network layer)
-    rsa_dict = {}
+    sep = helper.check_platform()
+    path = result_path + sep + "sub04"
+    layer_list = helper.get_layers_ncondns(path)[1]
 
     # Calculating an result dictionary
-    layer_list = []
 
     result_dict = {}
     for brain_region in brain_rdms:
         brain_rdm = brain_rdms[brain_region]
         result_dict[brain_region] = []
-        for layer in network_rdms:
-            if layer not in layer_list:
-                layer_list.append(layer)
+        for layer in layer_list:
             network_rdm = network_rdms[layer]
             rsa_result = compare_rdms(network_rdm,brain_rdm)
             result_dict[brain_region].append(rsa_result)
@@ -373,17 +377,3 @@ def create_rsa_matrix(option, result_path):
     visualize_rsa_matrix(result_dict, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
     plt.savefig(save_path)
     plt.close()
-
-
-
-#OPTION 2:
-#result_dict = multiple_regression_solo_averaged("Alexnet pretrained results")
-
-#OPTION 1:
-#multiple_regression_average_results("Alexnet results\\average_rdms")
-
-#RSA
-#create_rsa_matrix(1, "Alexnet pretrained results")
-
-#x = compare_rdms("Alexnet random results_1\sub04\sess1_tr01_N3_S3_TFA1_J1.npz","Alexnet random results\sub04\sess1_tr01_N3_S3_TFA1_J1.npz")
-#print(x)
