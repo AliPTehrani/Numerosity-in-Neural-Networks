@@ -346,11 +346,18 @@ def rsa_heatmap_main(save_path):
             print("Enter 2 for TaskNum")
             print("Enter 3 for TaskSize")
             choose_option = input("Enter the option (1,2,3):")
+            if not represents_int(choose_option):
+                print("Please enter a number between 1-3")
+                rsa_heatmap_main(save_path)
+            elif not (choose_option in ["1", "2", "3"]):
+                print("Please enter a number between 1-3")
+                rsa_heatmap_main(save_path)
             choose_option = int(choose_option) - 1
             RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
             print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
             finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
             if not represents_int(finished_check):
+                print("finished no int amk")
                 finished = 1
             elif int(finished_check) != 1:
                 finished = 1
