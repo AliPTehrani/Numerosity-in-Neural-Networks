@@ -6,7 +6,7 @@ from sklearn import linear_model
 import helper
 from matplotlib import pyplot as plt
 import seaborn as sns
-
+from scipy import stats
 
 def remove_diagonal(rdm_lower_triangle):
     """Removes the diagonal of zeros and one value before the zero from the lower triangle of the rdm"""
@@ -22,6 +22,9 @@ def remove_diagonal(rdm_lower_triangle):
         index += counter
         counter += 1
         loops += 1
+
+    not_double_please = []
+
 
     return rdm_lower_triangle
 
@@ -269,7 +272,7 @@ def create_brain_region_rdm_dict(option):
 
     # Get option as filter to search for correct npz files
     sep = helper.check_platform()
-    option = ["taskBoth", "taskNum", "taskSize"][option - 1]
+    option = ["taskBoth", "taskNum", "taskSize"][option]
     # All rsa_files as npz
     #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
     #network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
@@ -277,10 +280,6 @@ def create_brain_region_rdm_dict(option):
     cwd = os.getcwd()
     search_path = os.getcwd() + sep + "RSA_matrices"
     all_rsa_files = glob.glob(search_path + "/*" + ".npz")
-
-
-
-
 
     filtered_files = []
     brain_rdms_dictionary = {}
@@ -330,7 +329,6 @@ def create_network_layer_rdm_dict(result_path):
 
 def visualize_rsa_matrix(result_dict,layer_list, option):
     rsa_matrix = []
-    # Need dictionary reversed for visual matrix
     brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
 
     for brain_region in brain_regions:
@@ -377,3 +375,238 @@ def create_rsa_matrix(option, result_path):
     visualize_rsa_matrix(result_dict, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
     plt.savefig(save_path)
     plt.close()
+
+
+
+def get_uppernoiseceiling(rdm):
+    """Calculate upper noise ceiling
+    1. Take the mean of all RDMs without removing subjects
+    2. Spearman of subject and average RDMs
+    3. Average all of that
+    => How good are the RDMs generalized"""
+    num_subs = rdm.shape[0]
+    unc = 0.0
+    for i in range(num_subs):
+        sub_rdm = rdm[i, :, :]
+        mean_sub_rdm = np.mean(rdm, axis=0)  # take mean
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        unc += RSA_spearman(sub_rdm, mean_sub_rdm)  # calculate spearman
+    unc = unc / num_subs
+    return unc
+
+
+def get_lowernoiseceiling(rdm):
+    """Take the lower noise ceiling
+    1. Extracting one subject from the overall rdm
+    2. Take the mean of all the other RDMs
+    3. Take spearman correlation of subject RDM and mean subject RDM
+    4. We do this for all the subjects and then calculate the average
+    => Can we predict person 15 from the rest of the subjects?
+    => Low Noise-Ceiling means we need better data"""
+    num_subs = rdm.shape[0]
+    lnc = 0.0
+    for i in range(num_subs):
+        sub_rdm = rdm[i, :, :]
+        rdm_sub_removed = np.delete(rdm, i, axis=0)  # remove one person
+        mean_sub_rdm = np.mean(rdm_sub_removed, axis=0)  # take mean of other RDMs
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+
+        lnc += RSA_spearman(sub_rdm, mean_sub_rdm)  # take spearman
+    lnc = lnc / num_subs  # average it
+    return lnc
+
+
+def get_noise_ceiling_fmri(target):
+    "Function to calculate noise ceilings for fmri scans"
+
+    key_list = []
+    for keys, values in target.items():
+        key_list.append(keys)
+
+    # lower nc and upper nc
+    lnc = get_lowernoiseceiling(target[key_list[0]])
+    unc = get_uppernoiseceiling(target[key_list[0]])
+
+    noise_ceilings = {"lnc": lnc, "unc" : unc}
+    return noise_ceilings
+
+def get_upper_noise_ceiling_2(allsub_brainregion_rdm):
+    mean_of_rdm = np.mean(allsub_brainregion_rdm, axis=0)
+    mean_of_rdm = remove_diagonal(get_lowertriangular(mean_of_rdm))
+    unc = 0.0
+    for sub in allsub_brainregion_rdm:
+        sub_rdm = remove_diagonal(get_lowertriangular(sub))
+        unc += RSA_spearman(sub_rdm, mean_of_rdm)  # take spearman
+    unc = unc/20
+    return unc
+
+def get_lower_noise_ceiling_2(allsub_brainregion_rdm):
+    """
+        num_subs = rdm.shape[0]
+    lnc = 0.0
+    for i in range(num_subs):
+        sub_rdm = rdm[i, :, :]
+        rdm_sub_removed = np.delete(rdm, i, axis=0)  # remove one person
+        mean_sub_rdm = np.mean(rdm_sub_removed, axis=0)  # take mean of other RDMs
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+
+        lnc += RSA_spearman(sub_rdm, mean_sub_rdm)  # take spearman
+    lnc = lnc / num_subs  # average it
+    return lnc
+    :param allsub_brainregion_rdm:
+    :return:
+    """
+    num_subs = allsub_brainregion_rdm.shape[0]
+    lnc = 0.0
+    for i in range(num_subs):
+        sub_rdm = allsub_brainregion_rdm[i]
+        rdm_sub_removed = np.delete(allsub_brainregion_rdm,i,axis=0)
+        mean_sub_rdm = np.mean(rdm_sub_removed,axis=0)
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+        lnc += RSA_spearman(mean_sub_rdm,sub_rdm)
+    lnc = lnc / num_subs
+    return lnc
+
+def get_noise_ceiling_2(allsub_brainregion_rdm):
+    allsub_brainregion_rdm = allsub_brainregion_rdm.f.arr_0
+    unc = get_upper_noise_ceiling_2(allsub_brainregion_rdm)
+    lnc = get_lower_noise_ceiling_2(allsub_brainregion_rdm)
+    return [lnc, unc]
+def get_brain_regions_npz(option):
+    # Get option as filter to search for correct npz files
+    sep = helper.check_platform()
+    option = ["taskBoth", "taskNum", "taskSize"][option]
+    # All rsa_files as npz
+    #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
+    #network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
+    #average_results = result_path + sep + "average_results"
+    cwd = os.getcwd()
+    search_path = os.getcwd() + sep + "RSA_matrices"
+    all_rsa_files = glob.glob(search_path + "/*" + ".npz")
+    brain_region_dict = {}
+    filtered_files = []
+    # Filter them on the correct option
+    for file in all_rsa_files:
+        if (option in file):
+            filtered_files.append(file)
+
+    for filtered_file in filtered_files:
+        average_rdm = []
+        loadednpz = helper.loadnpz(filtered_file)
+        filename = filtered_file.split(helper.check_platform())[-1]
+        brain_region = filename.split("_")
+        brain_region = brain_region[-1].split(".")[0]
+        brain_region_dict[brain_region] = loadednpz
+
+    return brain_region_dict
+
+
+def scan_result(out,noise_ceiling):
+    """Returns final dictionary with r², noiseceiling and sig and the noise ceilings"""
+
+    # Get the noise ceilings
+    lnc = noise_ceiling["lnc"]
+    unc = noise_ceiling["unc"]
+
+    # Get the keys
+    # Its only one key but this way it does not matter what the keys name is
+    key_list = []
+    for keys, values in out.items():
+        key_list.append(keys)
+    area_name = key_list[0]
+
+    # Calculate the important values
+    # {'IT_RDMs': (0.0012347533900088506, 0.009814439270876047)}
+    r2_value = out[area_name][0]
+    area_percentNC = ((r2_value) / (lnc)) * 100.  # evc percent of noise ceiling
+    sig_value = out[area_name][1]  # Are the results I produce random? Could I get my results with a random RDM?
+
+
+
+    # return all the values in a dict
+    # {'EVC_RDMs': [0.0007705639149007719, 0.001534065990921806, 4.9209348450876575], [lnc,unc]}
+    output_dict = {area_name: [r2_value, area_percentNC, sig_value, [lnc, unc]]}
+
+    return output_dict
+
+
+def evaluate_fmri(layer_rdm,fmri_rdms):
+    corr = [RSA_spearman(layer_rdm,fmri_rdm) for fmri_rdm in fmri_rdms]
+    corr_squared = np.square(corr)
+    return np.mean(corr_squared), stats.ttest_1samp(corr_squared, 0)[1]
+
+
+def noise_ceiling_main(option,network_save_path):
+
+    # 1.) get Brain .npz files
+    brain_rdms_dict = create_brain_region_rdm_dict(option)
+    brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
+
+
+    #2.)
+
+    #2.) for every layer calculate {layername: R² , Significance}
+    #Get layernames
+    sep = helper.check_platform()
+    layer_path = network_save_path + sep + "sub04"
+    layer_names = helper.get_layers_ncondns(layer_path)[1]
+
+    #get list of brain region_rdms
+    brain_region_rdms = []
+    for brain_region in brain_regions:
+        brain_region_rdm = brain_rdms_dict[brain_region]
+        brain_region_rdm = remove_diagonal(get_lowertriangular(brain_region_rdm))
+        brain_region_rdms.append(brain_region_rdm)
+
+    #3.) Get average noise ceilling
+    brain_region_dict = get_brain_regions_npz(option)
+    noise_ceiling = {"lnc": [], "unc": []}
+    for brain_region in brain_regions:
+        noise = get_noise_ceiling_fmri(brain_region_dict[brain_region])
+        noise_ceiling["lnc"].append(noise["lnc"])
+        noise_ceiling["unc"].append(noise["unc"])
+    noise_ceiling["lnc"] = np.mean(noise_ceiling["lnc"])
+    noise_ceiling["unc"] = np.mean(noise_ceiling["unc"])
+    result_list = []
+    for layer in layer_names:
+        layer_path = network_save_path + sep + "average_results" + sep + layer + ".npz"
+        layer_rdm = helper.loadnpz(layer_path)
+        layer_rdm = layer_rdm.f.arr_0
+        layer_rdm = remove_diagonal(get_lowertriangular(layer_rdm))
+        result_for_layer = {layer : evaluate_fmri(layer_rdm,brain_region_rdms)}
+        result_dict  = scan_result(result_for_layer,noise_ceiling)
+        result_list.append(result_dict)
+    print(" "*10 , "R2"," "*15,"NOISECEILING"," "*10,"significance"," "*10,"[lnc,unc]")
+    for i in range(len(result_list)):
+        print(result_list[i])
+
+
+    """
+    #1.) get correct brain data
+    brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
+    brain_region_dict = get_brain_regions_npz(option)
+    noise_ceiling_dict = {}
+
+    #for every brain region
+    for brain_region in brain_regions:
+        noise_ceiling_dict[brain_region] = get_noise_ceiling_2(brain_region_dict[brain_region])
+    lnc = 0.0
+    unc = 0.0
+    for brain_region in brain_regions:
+        lnc += noise_ceiling_dict[brain_region][0]
+        unc += noise_ceiling_dict[brain_region][1]
+    print("test")
+    lnc = lnc/10
+    unc = unc/10
+    print("test")
+    """
+
+#brain_rdm = helper.loadnpz("RSA_matrices\RDM_allsub_taskNum_V1\RDM_allsub_taskNum_V1.npz")
+#x = get_noise_ceiling_fmri(brain_rdm)
+#print(x)
+
+noise_ceiling_main(1,"Alexnet pretrained results")
