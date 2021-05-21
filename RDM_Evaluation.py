@@ -4,6 +4,7 @@ import os
 from scipy.stats import spearmanr
 from sklearn import linear_model
 import helper
+from scipy.spatial.distance import squareform
 from matplotlib import pyplot as plt
 import seaborn as sns
 from scipy import stats
@@ -308,6 +309,9 @@ def create_brain_region_rdm_dict(option):
 
     return brain_rdms_dictionary
 
+def sq(x):
+    return squareform(x, force = "tovector", checks=False)
+
 
 def create_network_layer_rdm_dict(result_path):
     """Returns dictionary with {layer : rdm, ... } for the average rdms of the network"""
@@ -609,4 +613,4 @@ def noise_ceiling_main(option,network_save_path):
 #x = get_noise_ceiling_fmri(brain_rdm)
 #print(x)
 
-noise_ceiling_main(1,"Alexnet pretrained results")
+#noise_ceiling_main(1,"Alexnet pretrained results")
