@@ -417,7 +417,7 @@ def main_ui():
 
     # 6.) Noise ceiling evaluation
     try:
-        evaluate_noise_main()
+        evaluate_noise_main(save_path)
     except FileNotFoundError:
         print("Warning: Noise Ceiling could not be performed!")
         print("Please make sure that RDMs were generated before.")

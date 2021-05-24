@@ -22,6 +22,8 @@
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +50,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../NeuralToolBox" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -60,7 +62,7 @@
       <recent name="C:\Users\Ali\PycharmProjects\untitled2\Numerosity-in-Neural-Networks\Google Colab" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UI_main">
+  <component name="RunManager" selected="Python.RDM_Evaluation">
     <configuration name="RDM_Evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Numerosity-in-Neural-Networks" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -173,8 +175,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.UI_main" />
         <item itemvalue="Python.RDM_Evaluation" />
+        <item itemvalue="Python.UI_main" />
         <item itemvalue="Python.helper" />
         <item itemvalue="Python.generate_RDM" />
         <item itemvalue="Python.main_skeleton" />
@@ -226,7 +228,10 @@
       <workItem from="1620323451061" duration="5804000" />
       <workItem from="1620368801678" duration="17114000" />
       <workItem from="1620891944350" duration="9372000" />
-      <workItem from="1621429627957" duration="19926000" />
+      <workItem from="1621429627957" duration="21194000" />
+      <workItem from="1621592492224" duration="3473000" />
+      <workItem from="1621605276704" duration="11159000" />
+      <workItem from="1621753128486" duration="28794000" />
     </task>
     <servers />
   </component>
@@ -250,54 +255,59 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="710" height="466" key="DebuggerActiveHint/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1620325047219" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1621442836461">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="-1234" y="211" key="FileChooserDialogImpl" timestamp="1621710857847">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="-1234" y="211" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621710857847" />
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621442836461" />
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1620222822510" />
-    <state width="1493" height="168" key="GridCell.Tab.0.bottom" timestamp="1621584891307">
+    <state width="1877" height="303" key="GridCell.Tab.0.bottom" timestamp="1621872655652">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1877" height="349" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1619550592404" />
-    <state width="1493" height="168" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584891307" />
+    <state width="1877" height="454" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
+    <state width="1877" height="303" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
     <state width="1493" height="208" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620234030256" />
-    <state width="1493" height="168" key="GridCell.Tab.0.center" timestamp="1621584891307">
+    <state width="1877" height="303" key="GridCell.Tab.0.center" timestamp="1621872655652">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1877" height="349" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1619550592404" />
-    <state width="1493" height="168" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584891307" />
+    <state width="1877" height="454" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
+    <state width="1877" height="303" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
     <state width="1493" height="208" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1620234030255" />
-    <state width="1493" height="168" key="GridCell.Tab.0.left" timestamp="1621584891307">
+    <state width="1877" height="303" key="GridCell.Tab.0.left" timestamp="1621872655652">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1877" height="349" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1619550592404" />
-    <state width="1493" height="168" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584891307" />
+    <state width="1877" height="454" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
+    <state width="1877" height="303" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
     <state width="1493" height="208" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1620234030254" />
-    <state width="1493" height="168" key="GridCell.Tab.0.right" timestamp="1621584891307">
+    <state width="1877" height="303" key="GridCell.Tab.0.right" timestamp="1621872655652">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1877" height="349" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1619550592404" />
-    <state width="1493" height="168" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584891307" />
+    <state width="1877" height="454" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
+    <state width="1877" height="303" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
     <state width="1493" height="208" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1620234030256" />
-    <state width="1493" height="215" key="GridCell.Tab.1.bottom" timestamp="1621584896645">
+    <state width="1493" height="293" key="GridCell.Tab.1.bottom" timestamp="1621872655630">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="215" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584896645" />
+    <state width="1877" height="454" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
+    <state width="1493" height="293" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655630" />
     <state width="1493" height="208" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620234030258" />
-    <state width="1493" height="215" key="GridCell.Tab.1.center" timestamp="1621584896645">
+    <state width="1493" height="293" key="GridCell.Tab.1.center" timestamp="1621872655629">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="215" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584896645" />
+    <state width="1877" height="454" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
+    <state width="1493" height="293" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655629" />
     <state width="1493" height="208" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
-    <state width="1493" height="215" key="GridCell.Tab.1.left" timestamp="1621584896645">
+    <state width="1493" height="293" key="GridCell.Tab.1.left" timestamp="1621872655629">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="215" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584896645" />
+    <state width="1877" height="454" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
+    <state width="1493" height="293" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655629" />
     <state width="1493" height="208" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
-    <state width="1493" height="215" key="GridCell.Tab.1.right" timestamp="1621584896645">
+    <state width="1493" height="293" key="GridCell.Tab.1.right" timestamp="1621872655630">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="215" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621584896645" />
+    <state width="1877" height="454" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
+    <state width="1493" height="293" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655630" />
     <state width="1493" height="208" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
     <state x="277" y="57" key="SettingsEditor" timestamp="1617961527598">
       <screen x="0" y="0" width="1536" height="824" />
@@ -326,27 +336,27 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
           <line>602</line>
-          <option name="timeStamp" value="53" />
+          <option name="timeStamp" value="107" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>363</line>
-          <option name="timeStamp" value="57" />
+          <line>533</line>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>377</line>
-          <option name="timeStamp" value="59" />
+          <line>544</line>
+          <option name="timeStamp" value="111" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>540</line>
-          <option name="timeStamp" value="60" />
+          <line>511</line>
+          <option name="timeStamp" value="112" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>541</line>
-          <option name="timeStamp" value="61" />
+          <line>512</line>
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -354,6 +364,8 @@
       <configuration name="PythonConfigurationType">
         <watch expression="sub_rdm" />
         <watch expression="sub_rdm" />
+        <watch expression="corr_squared" />
+        <watch expression="result_dict.__len__()" />
       </configuration>
     </watches-manager>
   </component>
@@ -361,7 +373,7 @@
     <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$main_skeleton.coverage" NAME="main_skeleton Coverage Results" MODIFIED="1618238258957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$generate_RDM.coverage" NAME="generate_RDM Coverage Results" MODIFIED="1618924990573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$helper.coverage" NAME="helper Coverage Results" MODIFIED="1619545500911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$RDM_Evaluation.coverage" NAME="RDM_Evaluation Coverage Results" MODIFIED="1621583224323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$UI_main.coverage" NAME="UI_main Coverage Results" MODIFIED="1621584891159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$RDM_Evaluation.coverage" NAME="RDM_Evaluation Coverage Results" MODIFIED="1621869791699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$UI_main.coverage" NAME="UI_main Coverage Results" MODIFIED="1621869083234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

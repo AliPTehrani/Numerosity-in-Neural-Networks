@@ -91,3 +91,6 @@ def delete_files(result_path):
     for npz_file in npz_files:
         os.remove(npz_file)
 
+#def sort_results():
+
+
