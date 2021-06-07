@@ -393,13 +393,13 @@ def create_rsa_matrix(option, result_path):
     plt.close()
 
 
-
+"""
 def get_uppernoiseceiling(rdm):
-    """Calculate upper noise ceiling
-    1. Take the mean of all RDMs without removing subjects
-    2. Spearman of subject and average RDMs
-    3. Average all of that
-    => How good are the RDMs generalized"""
+    #Calculate upper noise ceiling
+    #1. Take the mean of all RDMs without removing subjects
+    #2. Spearman of subject and average RDMs
+    #3. Average all of that
+    #=> How good are the RDMs generalized
     num_subs = rdm.shape[0]
     unc = 0.0
     for i in range(num_subs):
@@ -410,16 +410,33 @@ def get_uppernoiseceiling(rdm):
         unc += RSA_spearman(sub_rdm, mean_sub_rdm)  # calculate spearman
     unc = unc / num_subs
     return unc
+"""
+def get_uppernoiseceiling(rdm):
+    num_subs = rdm.shape[0]
+    unc = []
+    for i in range(num_subs):
+        sub_rdm = rdm[i,:,:]
+        mean_sub_rdm = np.mean(rdm,axis=0)
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        unc.append(np.square(np.corrcoef(sub_rdm,mean_sub_rdm)))
+    unc = np.mean(unc)
+    return unc
 
 
+
+#def get_uppernoiseceiling(rdm):
+
+
+"""
 def get_lowernoiseceiling(rdm):
-    """Take the lower noise ceiling
+    Take the lower noise ceiling
     1. Extracting one subject from the overall rdm
     2. Take the mean of all the other RDMs
     3. Take spearman correlation of subject RDM and mean subject RDM
     4. We do this for all the subjects and then calculate the average
     => Can we predict person 15 from the rest of the subjects?
-    => Low Noise-Ceiling means we need better data"""
+    => Low Noise-Ceiling means we need better data
     num_subs = rdm.shape[0]
     lnc = 0.0
     for i in range(num_subs):
@@ -431,6 +448,20 @@ def get_lowernoiseceiling(rdm):
 
         lnc += RSA_spearman(sub_rdm, mean_sub_rdm)  # take spearman
     lnc = lnc / num_subs  # average it
+    return lnc
+"""
+
+def get_lowernoiseceiling(rdm):
+    num_subs = rdm.shape[0]
+    lnc = []
+    for i in range(num_subs):
+        sub_rdm = rdm[i,:,:]
+        rdm_sub_removed = np.delete(rdm, i, axis=0)
+        mean_sub_rdm = np.mean(rdm_sub_removed,axis=0)
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        lnc.append(np.square(np.corrcoef(sub_rdm,mean_sub_rdm)))
+    lnc = np.mean(lnc)
     return lnc
 
 
@@ -507,8 +538,8 @@ def scan_result(out,noise_ceiling):
 
 
 def evaluate_fmri(layer_rdm,fmri_rdms):
-    corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
-
+    #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
+    corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
     corr_squared = np.square(corr)
     return np.mean(corr_squared), stats.ttest_1samp(corr_squared, 0)[1]
 
@@ -636,7 +667,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
         fig.suptitle("Brainregion: " + roi + "| R² and Noise ceilling in % ")
         fig.set_figheight(5)
         fig.set_figwidth(20)
-        axs[0].set_title("Squared Spearman correlation")
+        axs[0].set_title("Squared pearson correlation")
         axs[0].set(xlabel="Network Layers")
         axs[0].set(ylabel="Colored: R² , Grey: Noiseceilling")
         axs[1].set(xlabel="Network Layers")

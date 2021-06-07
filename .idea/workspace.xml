@@ -20,10 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Numerosity-in-Neural-Networks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Numerosity-in-Neural-Networks.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +61,7 @@
       <recent name="C:\Users\Ali\PycharmProjects\untitled2\Numerosity-in-Neural-Networks\Google Colab" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.RDM_Evaluation">
+  <component name="RunManager" selected="Python.UI_main">
     <configuration name="RDM_Evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Numerosity-in-Neural-Networks" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,14 +174,15 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.RDM_Evaluation" />
         <item itemvalue="Python.UI_main" />
+        <item itemvalue="Python.RDM_Evaluation" />
         <item itemvalue="Python.helper" />
         <item itemvalue="Python.generate_RDM" />
         <item itemvalue="Python.main_skeleton" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -232,6 +232,8 @@
       <workItem from="1621592492224" duration="3473000" />
       <workItem from="1621605276704" duration="11159000" />
       <workItem from="1621753128486" duration="28794000" />
+      <workItem from="1621872823723" duration="11000" />
+      <workItem from="1621946861395" duration="2147000" />
     </task>
     <servers />
   </component>
@@ -250,113 +252,23 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="WindowStateProjectService">
-    <state width="710" height="466" key="DebuggerActiveHint" timestamp="1620325047219">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="710" height="466" key="DebuggerActiveHint/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1620325047219" />
-    <state x="-1234" y="211" key="FileChooserDialogImpl" timestamp="1621710857847">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1234" y="211" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621710857847" />
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621442836461" />
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1620222822510" />
-    <state width="1877" height="303" key="GridCell.Tab.0.bottom" timestamp="1621872655652">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
-    <state width="1877" height="303" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
-    <state width="1493" height="208" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620234030256" />
-    <state width="1877" height="303" key="GridCell.Tab.0.center" timestamp="1621872655652">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
-    <state width="1877" height="303" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
-    <state width="1493" height="208" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1620234030255" />
-    <state width="1877" height="303" key="GridCell.Tab.0.left" timestamp="1621872655652">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
-    <state width="1877" height="303" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
-    <state width="1493" height="208" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1620234030254" />
-    <state width="1877" height="303" key="GridCell.Tab.0.right" timestamp="1621872655652">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869791821" />
-    <state width="1877" height="303" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655652" />
-    <state width="1493" height="208" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1620234030256" />
-    <state width="1493" height="293" key="GridCell.Tab.1.bottom" timestamp="1621872655630">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
-    <state width="1493" height="293" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655630" />
-    <state width="1493" height="208" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620234030258" />
-    <state width="1493" height="293" key="GridCell.Tab.1.center" timestamp="1621872655629">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
-    <state width="1493" height="293" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655629" />
-    <state width="1493" height="208" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
-    <state width="1493" height="293" key="GridCell.Tab.1.left" timestamp="1621872655629">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
-    <state width="1493" height="293" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655629" />
-    <state width="1493" height="208" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
-    <state width="1493" height="293" key="GridCell.Tab.1.right" timestamp="1621872655630">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1877" height="454" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621869796256" />
-    <state width="1493" height="293" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621872655630" />
-    <state width="1493" height="208" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1620234030257" />
-    <state x="277" y="57" key="SettingsEditor" timestamp="1617961527598">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617961527598" />
-    <state width="775" height="419" key="XDebugger.FullValuePopup" timestamp="1618313856169">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1618313856169" />
-    <state x="-1534" y="150" width="1143" height="811" key="dock-window-1" timestamp="1620917563732">
-      <screen x="-1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="-1534" y="150" width="1143" height="811" key="dock-window-1/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1620917563732" />
-    <state x="611" y="185" key="refactoring.ChangeSignatureDialog" timestamp="1621526807553">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="611" y="185" key="refactoring.ChangeSignatureDialog/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1621526807553" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1620904261462">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1620904261462" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>602</line>
-          <option name="timeStamp" value="107" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>533</line>
-          <option name="timeStamp" value="110" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>544</line>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>511</line>
+          <line>542</line>
           <option name="timeStamp" value="112" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>512</line>
+          <line>543</line>
           <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
+          <line>464</line>
+          <option name="timeStamp" value="118" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -368,12 +280,5 @@
         <watch expression="result_dict.__len__()" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$main_skeleton.coverage" NAME="main_skeleton Coverage Results" MODIFIED="1618238258957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$generate_RDM.coverage" NAME="generate_RDM Coverage Results" MODIFIED="1618924990573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$helper.coverage" NAME="helper Coverage Results" MODIFIED="1619545500911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$RDM_Evaluation.coverage" NAME="RDM_Evaluation Coverage Results" MODIFIED="1621869791699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Numerosity_in_Neural_Networks$UI_main.coverage" NAME="UI_main Coverage Results" MODIFIED="1621869083234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
