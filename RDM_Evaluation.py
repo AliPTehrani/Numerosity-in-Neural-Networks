@@ -12,6 +12,8 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from scipy import stats
 import pandas as pd
+from sklearn.metrics import r2_score
+from sklearn.linear_model import LinearRegression
 
 def remove_diagonal(rdm_lower_triangle):
     """Removes the diagonal of zeros and one value before the zero from the lower triangle of the rdm"""
@@ -411,6 +413,7 @@ def get_uppernoiseceiling(rdm):
     unc = unc / num_subs
     return unc
 """
+"""
 def get_uppernoiseceiling(rdm):
     num_subs = rdm.shape[0]
     unc = []
@@ -422,11 +425,22 @@ def get_uppernoiseceiling(rdm):
         unc.append(np.square(np.corrcoef(sub_rdm,mean_sub_rdm)))
     unc = np.mean(unc)
     return unc
+"""
 
 
-
-#def get_uppernoiseceiling(rdm):
-
+def get_uppernoiseceiling(rdm):
+    num_subs = rdm.shape[0]
+    unc = []
+    for i in range(num_subs):
+        sub_rdm = rdm[i,:,:]
+        mean_sub_rdm = np.mean(rdm,axis=0)
+        sub_rdm = (remove_diagonal(get_lowertriangular(sub_rdm))).reshape(-1,1)
+        mean_sub_rdm = (remove_diagonal(get_lowertriangular(mean_sub_rdm))).reshape(-1,1)
+        lr = linear_model.LinearRegression()
+        lr.fit(sub_rdm,mean_sub_rdm)
+        unc.append(lr.score(sub_rdm,mean_sub_rdm))
+    unc = np.mean(unc)
+    return unc
 
 """
 def get_lowernoiseceiling(rdm):
@@ -451,6 +465,7 @@ def get_lowernoiseceiling(rdm):
     return lnc
 """
 
+"""
 def get_lowernoiseceiling(rdm):
     num_subs = rdm.shape[0]
     lnc = []
@@ -460,10 +475,29 @@ def get_lowernoiseceiling(rdm):
         mean_sub_rdm = np.mean(rdm_sub_removed,axis=0)
         sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
         mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
-        lnc.append(np.square(np.corrcoef(sub_rdm,mean_sub_rdm)))
-    lnc = np.mean(lnc)
+        lnc.append((np.corrcoef(sub_rdm,mean_sub_rdm)))
+    lnc = np.mean(np.square(lnc))
     return lnc
+"""
 
+
+def get_lowernoiseceiling(rdm):
+    num_subs = rdm.shape[0]
+    lnc = []
+
+    for i in range(num_subs):
+        sub_rdm = rdm[i,:,:]
+        rdm_sub_removed = np.delete(rdm, i, axis=0)
+        mean_sub_rdm = np.mean(rdm_sub_removed,axis=0)
+        sub_rdm = (remove_diagonal(get_lowertriangular(sub_rdm))).reshape(-1,1)
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm)).reshape(-1,1)
+        lr = linear_model.LinearRegression()
+        lr.fit(sub_rdm,mean_sub_rdm)
+        lnc.append(lr.score(sub_rdm,mean_sub_rdm))
+
+    lnc = np.mean(lnc)
+
+    return lnc
 
 def get_noise_ceiling_fmri(target):
     "Function to calculate noise ceilings for fmri scans"
@@ -536,13 +570,32 @@ def scan_result(out,noise_ceiling):
 
     return output_dict
 
-
+"""
 def evaluate_fmri(layer_rdm,fmri_rdms):
     #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
     corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
     corr_squared = np.square(corr)
     return np.mean(corr_squared), stats.ttest_1samp(corr_squared, 0)[1]
+"""
 
+def evaluate_fmri(layer_rdm,fmri_rdms):
+    #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
+    #corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
+    corr = []
+    layer_rdm = layer_rdm.reshape(-1,1)
+    for fmri_rdm in fmri_rdms:
+        lr = linear_model.LinearRegression()
+        fmri_rdm = (remove_diagonal(get_lowertriangular(fmri_rdm))).reshape(-1,1)
+        lr.fit(layer_rdm, fmri_rdm)
+        corr.append(lr.score(layer_rdm,fmri_rdm))
+
+
+
+
+
+    #corr = [[r2_score(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]]
+    #corr_squared = np.square(corr)
+    return np.mean(corr), stats.ttest_1samp(corr, 0)[1]
 
 
 def noise_ceiling_main(option,network_save_path):
@@ -667,7 +720,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
         fig.suptitle("Brainregion: " + roi + "| R² and Noise ceilling in % ")
         fig.set_figheight(5)
         fig.set_figwidth(20)
-        axs[0].set_title("Squared pearson correlation")
+        axs[0].set_title("R² score from linear regression")
         axs[0].set(xlabel="Network Layers")
         axs[0].set(ylabel="Colored: R² , Grey: Noiseceilling")
         axs[1].set(xlabel="Network Layers")
@@ -689,6 +742,4 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
         plt.savefig(save_path_roi)
 
         plt.close()
-
-
 
