@@ -22,6 +22,8 @@
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_RDM.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_RDM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matlab_rdms.py" beforeDir="false" afterPath="$PROJECT_DIR$/matlab_rdms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +58,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../NeuralToolBox" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -157,7 +159,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main_skeleton" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="matlab_rdms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Numerosity-in-Neural-Networks" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -169,8 +171,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_skeleton.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/matlab_rdms.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -182,10 +183,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.UI_main" />
+        <item itemvalue="Python.matlab_rdms" />
+        <item itemvalue="Python.generate_RDM" />
         <item itemvalue="Python.RDM_Evaluation" />
         <item itemvalue="Python.helper" />
-        <item itemvalue="Python.generate_RDM" />
-        <item itemvalue="Python.main_skeleton" />
       </list>
     </recent_temporary>
   </component>
@@ -263,9 +264,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/RDM_Evaluation.py</url>
-          <line>499</line>
-          <option name="timeStamp" value="142" />
+          <url>file://$PROJECT_DIR$/generate_features.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="163" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_features.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="164" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_RDM.py</url>
+          <line>238</line>
+          <option name="timeStamp" value="177" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -278,6 +289,7 @@
         <watch expression="mean_sub_rdm" />
         <watch expression="lnc" />
         <watch expression="corr_squared" />
+        <watch expression="position_and_frequency" />
       </configuration>
     </watches-manager>
   </component>

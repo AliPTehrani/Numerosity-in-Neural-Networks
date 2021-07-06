@@ -50,6 +50,8 @@ def get_lowertriangular(rdm):
 def compare_rdms(network_rdm, brain_rdms):
     """Compares two RDM using only the lower triangle and Spearman-correlation"""
     """
+    
+    # Spearman Correlation group averaged
     # Load npz files from given path
     if type(rdm_path1) == np.ndarray:
         rdm1 = rdm_path1
@@ -70,10 +72,27 @@ def compare_rdms(network_rdm, brain_rdms):
 
     result = RSA_spearman(rdm1, rdm2)
     """
+    """
+    #Spearman Correlation not group averaged 
     network_rdm = remove_diagonal(get_lowertriangular(network_rdm))
     brain_rdms = [remove_diagonal(get_lowertriangular(brain_rdm)) for brain_rdm in brain_rdms]
     result = [RSA_spearman(network_rdm, brain_rdm) for brain_rdm in brain_rdms]
     result = np.mean(result)
+
+    """
+
+    # Option linear regression R^2
+    corr = []
+    layer_rdm = (remove_diagonal(get_lowertriangular(network_rdm))).reshape(-1, 1)
+    for fmri_rdm in brain_rdms:
+        fmri_rdm = remove_diagonal(get_lowertriangular(fmri_rdm)).reshape(-1,1)
+        lr = linear_model.LinearRegression()
+        lr.fit(layer_rdm, fmri_rdm)
+        corr.append(lr.score(layer_rdm,fmri_rdm))
+
+    corr_squared = np.square(corr)
+    result = np.mean(corr_squared)
+
     return result
 
 
@@ -102,7 +121,9 @@ def multiple_regression(rdm):
     predictor_npz_1 = helper.loadnpz("RSA_matrices" + sep  + "all_RDM_predictors.npz")
 
     # Extract array (rdm) from npz
-    rdm = loaded_npz.f.arr_0
+    if isinstance(rdm,np.lib.npyio.NpzFile):
+        rdm = loaded_npz.f.arr_0
+
     predictor_rdms = predictor_npz_1.f.arr_0
     predictor1 = predictor_rdms[0]
     predictor2 = predictor_rdms[1]
@@ -323,22 +344,7 @@ def sq(x):
     return squareform(x, force = "tovector", checks=False)
 
 
-def create_network_layer_rdm_dict(result_path):
-    """Returns dictionary with {layer : rdm, ... } for the average rdms of the network"""
 
-    sep = helper.check_platform()
-    average_results = result_path + sep + "average_results"
-    search_path = average_results + "/*" + ".npz"
-    network_rdms = glob.glob(search_path, recursive=True)
-
-    network_rdms_dictionary = {}
-    for network_rdm in network_rdms:
-        layer_name = network_rdm.split(helper.check_platform())[-1].split(".")[0]
-        loaded_npz = helper.loadnpz(network_rdm)
-        rdm = loaded_npz.f.arr_0
-        network_rdms_dictionary[layer_name] = rdm
-
-    return network_rdms_dictionary
 
 
 def visualize_rsa_matrix(result_dict,layer_list, option):
@@ -352,26 +358,25 @@ def visualize_rsa_matrix(result_dict,layer_list, option):
     layers = layer_list
 
     plt.title("brain - network RDM similarity: " + option, fontsize = 15)
-    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=-1,
-                          vmax=1, cbar_kws={'label': 'Spearman correlation coefficient'})
+    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=0  #vmax=1
+        ,cbar_kws = {'label': 'R2 Score from linear regression'})   #,cbar_kws={'label': 'Spearman correlation coefficient'}) #cbar_kws={'label': 'R2 Score from linear regression'})#
     heatmap.figure.axes[-1].yaxis.label.set_size(13)
 
     return heatmap
 
 
 def create_rsa_matrix(option, result_path):
-    """
-    Creates matrix comparing with rsa : [ x axis : layer of network , y axis : brain regions from RSA_Matrices ]
-    option 1 = taskBoth
-    option 2 = taskNum
-    option 3 = taskSize
-    """
+
+    #Creates matrix comparing with rsa : [ x axis : layer of network , y axis : brain regions from RSA_Matrices ]
+    #option 1 = taskBoth
+    #option 2 = taskNum
+    #option 3 = taskSize
+
     # Creating a dictionary for the RDMs of the brain regions depending on the option
     # Old version
     #brain_rdms = create_brain_region_rdm_dict(option)
     brain_rdms = get_brain_regions_npz(option)
     # Creating a dictionary for the RDMs of the layers from the network
-    network_rdms = create_network_layer_rdm_dict(result_path)
     sep = helper.check_platform()
     path = result_path + sep + "sub04"
     layer_list = helper.get_layers_ncondns(path)[1]
@@ -384,8 +389,12 @@ def create_rsa_matrix(option, result_path):
         brain_rdm = brain_rdms[brain_region]
         result_dict[brain_region] = []
         for layer in layer_list:
-            network_rdm = network_rdms[layer]
-            rsa_result = compare_rdms(network_rdm,brain_rdm)
+            network_path = result_path + sep + "average_results" + sep + layer + ".npz"
+            network_rdm = helper.loadnpz(network_path)
+            network_rdm = network_rdm.f.arr_0
+            network_rdm = remove_diagonal(get_lowertriangular(network_rdm))
+            #rsa_result = compare_rdms(network_rdm,brain_rdm)
+            rsa_result = evaluate_fmri(network_rdm , brain_rdm)[0]
             result_dict[brain_region].append(rsa_result)
 
     sep = helper.check_platform()
@@ -394,6 +403,21 @@ def create_rsa_matrix(option, result_path):
     plt.savefig(save_path)
     plt.close()
 
+
+
+def get_uppernoiseceiling(rdm):
+    num_subs = rdm.shape[0]
+    unc = []
+    for i in range(num_subs):
+        sub_rdm = rdm[i,:,:]
+        mean_sub_rdm = np.mean(rdm,axis=0)
+        sub_rdm = (remove_diagonal(get_lowertriangular(sub_rdm))).reshape(-1,1)
+        mean_sub_rdm = (remove_diagonal(get_lowertriangular(mean_sub_rdm))).reshape(-1,1)
+        lr = linear_model.LinearRegression()
+        lr.fit(sub_rdm,mean_sub_rdm)
+        unc.append(lr.score(sub_rdm,mean_sub_rdm))
+    unc = np.mean(unc)
+    return unc
 
 """
 def get_uppernoiseceiling(rdm):
@@ -413,73 +437,6 @@ def get_uppernoiseceiling(rdm):
     unc = unc / num_subs
     return unc
 """
-"""
-def get_uppernoiseceiling(rdm):
-    num_subs = rdm.shape[0]
-    unc = []
-    for i in range(num_subs):
-        sub_rdm = rdm[i,:,:]
-        mean_sub_rdm = np.mean(rdm,axis=0)
-        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
-        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
-        unc.append(np.square(np.corrcoef(sub_rdm,mean_sub_rdm)))
-    unc = np.mean(unc)
-    return unc
-"""
-
-
-def get_uppernoiseceiling(rdm):
-    num_subs = rdm.shape[0]
-    unc = []
-    for i in range(num_subs):
-        sub_rdm = rdm[i,:,:]
-        mean_sub_rdm = np.mean(rdm,axis=0)
-        sub_rdm = (remove_diagonal(get_lowertriangular(sub_rdm))).reshape(-1,1)
-        mean_sub_rdm = (remove_diagonal(get_lowertriangular(mean_sub_rdm))).reshape(-1,1)
-        lr = linear_model.LinearRegression()
-        lr.fit(sub_rdm,mean_sub_rdm)
-        unc.append(lr.score(sub_rdm,mean_sub_rdm))
-    unc = np.mean(unc)
-    return unc
-
-"""
-def get_lowernoiseceiling(rdm):
-    Take the lower noise ceiling
-    1. Extracting one subject from the overall rdm
-    2. Take the mean of all the other RDMs
-    3. Take spearman correlation of subject RDM and mean subject RDM
-    4. We do this for all the subjects and then calculate the average
-    => Can we predict person 15 from the rest of the subjects?
-    => Low Noise-Ceiling means we need better data
-    num_subs = rdm.shape[0]
-    lnc = 0.0
-    for i in range(num_subs):
-        sub_rdm = rdm[i, :, :]
-        rdm_sub_removed = np.delete(rdm, i, axis=0)  # remove one person
-        mean_sub_rdm = np.mean(rdm_sub_removed, axis=0)  # take mean of other RDMs
-        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
-        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
-
-        lnc += RSA_spearman(sub_rdm, mean_sub_rdm)  # take spearman
-    lnc = lnc / num_subs  # average it
-    return lnc
-"""
-
-"""
-def get_lowernoiseceiling(rdm):
-    num_subs = rdm.shape[0]
-    lnc = []
-    for i in range(num_subs):
-        sub_rdm = rdm[i,:,:]
-        rdm_sub_removed = np.delete(rdm, i, axis=0)
-        mean_sub_rdm = np.mean(rdm_sub_removed,axis=0)
-        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
-        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
-        lnc.append((np.corrcoef(sub_rdm,mean_sub_rdm)))
-    lnc = np.mean(np.square(lnc))
-    return lnc
-"""
-
 
 def get_lowernoiseceiling(rdm):
     num_subs = rdm.shape[0]
@@ -498,6 +455,30 @@ def get_lowernoiseceiling(rdm):
     lnc = np.mean(lnc)
 
     return lnc
+
+"""
+def get_lowernoiseceiling(rdm):
+    
+    #Take the lower noise ceiling
+    #1. Extracting one subject from the overall rdm
+    #2. Take the mean of all the other RDMs
+    #3. Take spearman correlation of subject RDM and mean subject RDM
+    #4. We do this for all the subjects and then calculate the average
+    #=> Can we predict person 15 from the rest of the subjects?
+    #=> Low Noise-Ceiling means we need better data
+    
+    num_subs = rdm.shape[0]
+    lnc = 0.0
+    for i in range(num_subs):
+        sub_rdm = rdm[i, :, :]
+        rdm_sub_removed = np.delete(rdm, i, axis=0)  # remove one person
+        mean_sub_rdm = np.mean(rdm_sub_removed, axis=0)  # take mean of other RDMs
+        mean_sub_rdm = remove_diagonal(get_lowertriangular(mean_sub_rdm))
+        sub_rdm = remove_diagonal(get_lowertriangular(sub_rdm))
+        lnc += RSA_spearman(sub_rdm, mean_sub_rdm)  # take spearman
+    lnc = lnc / num_subs  # average it
+    return lnc
+"""
 
 def get_noise_ceiling_fmri(target):
     "Function to calculate noise ceilings for fmri scans"
@@ -570,31 +551,21 @@ def scan_result(out,noise_ceiling):
 
     return output_dict
 
-"""
-def evaluate_fmri(layer_rdm,fmri_rdms):
-    #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
-    corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
-    corr_squared = np.square(corr)
-    return np.mean(corr_squared), stats.ttest_1samp(corr_squared, 0)[1]
-"""
 
 def evaluate_fmri(layer_rdm,fmri_rdms):
     #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
     #corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
+
     corr = []
     layer_rdm = layer_rdm.reshape(-1,1)
+    
     for fmri_rdm in fmri_rdms:
         lr = linear_model.LinearRegression()
         fmri_rdm = (remove_diagonal(get_lowertriangular(fmri_rdm))).reshape(-1,1)
         lr.fit(layer_rdm, fmri_rdm)
         corr.append(lr.score(layer_rdm,fmri_rdm))
 
-
-
-
-
-    #corr = [[r2_score(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]]
-    #corr_squared = np.square(corr)
+    corr_squared = np.square(corr)
     return np.mean(corr), stats.ttest_1samp(corr, 0)[1]
 
 
@@ -718,11 +689,15 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
         save_path_roi = save_path + sep + "NoiseceillingGraph_" + roi
         fig, axs = plt.subplots(1, 2)
         fig.suptitle("Brainregion: " + roi + "| R² and Noise ceilling in % ")
+        #fig.suptitle("Brainregion: " + roi + "| R and Noise ceilling in % ")
         fig.set_figheight(5)
         fig.set_figwidth(20)
+        #axs[0].set_title("R from Spearman")
         axs[0].set_title("R² score from linear regression")
         axs[0].set(xlabel="Network Layers")
         axs[0].set(ylabel="Colored: R² , Grey: Noiseceilling")
+        #axs[0].set(ylabel="Colored: R , Grey: Noiseceilling")
+
         axs[1].set(xlabel="Network Layers")
         #axs[1].set(ylabel="Nois")
         axs[0].fill_between
@@ -743,3 +718,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
 
         plt.close()
 
+#noise_ceiling_main(1,"Alexnet pretrained results")
+#create_rsa_matrix(0,"Alexnet pretrained results")
+#create_rsa_matrix(1,"Alexnet pretrained results")
+#create_rsa_matrix(2,"Alexnet pretrained results")

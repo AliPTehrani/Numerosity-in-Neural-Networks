@@ -3,6 +3,8 @@ import glob
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+
+import RDM_Evaluation
 import helper
 
 
@@ -51,4 +53,21 @@ def read_in_rdms_matlab():
 
 
 """This function only has to be executed once, it is not implemented into the main function"""
-read_in_rdms_matlab()
+
+def multiple_regression_graph(option):
+    task = ["taskBoth", "taskNum", "taskSize"][option]
+    sep = helper.check_platform()
+    brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
+    result_dict = {}
+    for brain_region in brain_regions:
+        path = "RSA_matrices" + sep + "RDM_allsub_" + task + "_" + brain_region + ".npz"
+        brain_rdm = helper.loadnpz(path)
+        brain_rdm = brain_rdm.f.arr_0
+        brain_rdm = np.mean(brain_rdm,axis = 0)
+        result = RDM_Evaluation.multiple_regression(brain_rdm)
+        result_dict[brain_region] = result
+        RDM_Evaluation.visualize_multiple_regression(result_dict,"Alexnet pretrained results",str(option),[])
+
+
+#read_in_rdms_matlab()
+multiple_regression_graph(2)

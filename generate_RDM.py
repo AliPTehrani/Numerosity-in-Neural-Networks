@@ -27,7 +27,7 @@ def sum_tensors(all_tensors, x):
             # Get correct arrays from both list and tensor
             # all tensors is a list [i]
             layer = all_tensors[i]
-            # x is a tensor x[tensor]s
+            # x is a tensor x[tensor]
             layer2 = x[tensor]
             result = layer.__add__(layer2)
             new_tensor.append(result)
@@ -92,12 +92,14 @@ def average_all_npz(result_path, sub):
         # Fill dictionary {test case 1 : [all arrays summed, frequency] , testcase2 : ... , ...}
         # If frequency == 0: sum tensors on empty list
         if position_and_frequency[test_case_of_npz][1] == 0:
+            x_path = (path + sep +file_name)
             position_and_frequency[test_case_of_npz][0] = sum_tensors([],
-                                                               helper.loadnpz(path+ sep + file_name))
+                                                               helper.loadnpz(x_path))
         # If frequency /= 0: sum tensors
         else:
+            y_path = (path + sep + file_name)
             position_and_frequency[test_case_of_npz][0] = sum_tensors(position_and_frequency[test_case_of_npz][0],
-                                                               helper.loadnpz(path + sep + file_name))
+                                                               helper.loadnpz(y_path))
 
         # Count frequency
         position_and_frequency[test_case_of_npz][1] += 1
@@ -283,3 +285,5 @@ def visualize_rdms(result_path):
             plt.close()
 
 
+#create_rdms("Alexnet pretrained results", "sub04")
+#visualize_rdms("Alexnet pretrained results")
