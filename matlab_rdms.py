@@ -53,11 +53,11 @@ def read_in_rdms_matlab():
 
 
 """This function only has to be executed once, it is not implemented into the main function"""
-
 def multiple_regression_graph(option):
     task = ["taskBoth", "taskNum", "taskSize"][option]
     sep = helper.check_platform()
     brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
+    brain_regions.reverse()
     result_dict = {}
     for brain_region in brain_regions:
         path = "RSA_matrices" + sep + "RDM_allsub_" + task + "_" + brain_region + ".npz"
@@ -70,4 +70,6 @@ def multiple_regression_graph(option):
 
 
 #read_in_rdms_matlab()
+multiple_regression_graph(0)
+multiple_regression_graph(1)
 multiple_regression_graph(2)

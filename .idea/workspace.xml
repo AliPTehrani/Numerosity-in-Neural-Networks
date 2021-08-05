@@ -22,7 +22,6 @@
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generate_RDM.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_RDM.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matlab_rdms.py" beforeDir="false" afterPath="$PROJECT_DIR$/matlab_rdms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +57,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../uebung5" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -70,7 +69,7 @@
       <recent name="C:\Users\Ali\PycharmProjects\untitled2\Numerosity-in-Neural-Networks\Google Colab" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UI_main">
+  <component name="RunManager" selected="Python.matlab_rdms">
     <configuration name="RDM_Evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Numerosity-in-Neural-Networks" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -182,8 +181,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.UI_main" />
         <item itemvalue="Python.matlab_rdms" />
+        <item itemvalue="Python.UI_main" />
         <item itemvalue="Python.generate_RDM" />
         <item itemvalue="Python.RDM_Evaluation" />
         <item itemvalue="Python.helper" />

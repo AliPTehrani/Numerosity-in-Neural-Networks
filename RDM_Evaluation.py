@@ -1,4 +1,3 @@
-
 from itertools import cycle, islice
 import numpy as np
 import glob
@@ -210,12 +209,13 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
     plt.plot(x_coordinates, y_coordinates[4], color="red",  marker="v", label="Density")
 
     sep = helper.check_platform()
-    save_path = save_path + sep + "beta_weights " + option
+    save_path = save_path + sep + "Multiple_regression_" + ["task_both","task_num","task_size"][int(option)]
 
     plt.xlabel("layer")
     plt.ylabel("beta weights")
     plt.title("Multiple regression on layer RDMs")
-    plt.legend()
+    plt.legend( bbox_to_anchor = (1.05, 1), loc = 'upper left')
+
 
     if standard_error_dict != []:
         list_of_errors = []
@@ -223,7 +223,7 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
             list_of_errors.append(standard_error_dict[layer])
     #print(standard_error_dict)
 
-    plt.savefig(save_path)
+    plt.savefig(save_path,bbox_inches='tight')
     plt.close()
 
 
