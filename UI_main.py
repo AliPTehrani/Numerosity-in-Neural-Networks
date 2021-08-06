@@ -243,7 +243,7 @@ def choose_model_main():
                     print("Finished choosing models.")
                     finished = True
                     correct_input_2 = True
-                if check_finished == "1":
+                elif check_finished == "1":
                     correct_input_2 = True
                 else:
                     print("Could not recognize input please try again!")
