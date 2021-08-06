@@ -226,50 +226,75 @@ def choose_model_main():
     last_row = network_table[1]
     network_table = network_table[0]
 
-    correct_input = False
-    while not correct_input:
-        clear = Clear()
-        print(network_table)
-        config_number = input("Please enter the ID of the Architecture from the table above:")
+    finished = False
+    first_model = True
+    chosen_models = []
+    while (not finished) or first_model:
+        if not first_model:
+            correct_input_2 = False
+            while not correct_input_2:
+                save_paths_output = [model_save_path[1] for model_save_path in chosen_models]
+                save_paths_output = [save_path.split(" ") for save_path in save_paths_output]
+                save_paths_output = [save_path_part[0] + " " + save_path_part[1] for save_path_part in save_paths_output]
+                print("Choosed models",save_paths_output)
+                print("Would you like to choose more models?")
+                check_finished = input("Please enter 1 to proceed choosing more models, enter 0 to stop choosing models:")
+                if check_finished == "0":
+                    print("Finished choosing models.")
+                    finished = True
+                    correct_input_2 = True
+                if check_finished == "1":
+                    correct_input_2 = True
+                else:
+                    print("Could not recognize input please try again!")
 
-        if not represents_int(config_number):
-            print("ERROR: Please enter an number!")
-            time.sleep(5)
-        elif (int(config_number) < 1) or (int(config_number) > last_row):
-            print("ERROR: Please enter an number between 1 and " + str(last_row) + " !")
-            time.sleep(5)
-        else:
-            correct_input = True
+        if finished:
+            break
 
-    model_id = config_number
+        correct_input = False
+        while not correct_input:
+            clear = Clear()
+            print(network_table)
 
-    setting_table = create_pretty_table_network_configuration(model_id)
-    last_row = setting_table[1]
-    setting_table = setting_table[0]
-    correct_input_2 = False
+            config_number = input("Please enter the ID of the Architecture from the table above:")
 
-    while not correct_input_2:
-        clear = Clear()
+            if not represents_int(config_number):
+                print("ERROR: Please enter an number!")
+                time.sleep(5)
+            elif (int(config_number) < 1) or (int(config_number) > last_row):
+                print("ERROR: Please enter an number between 1 and " + str(last_row) + " !")
+                time.sleep(5)
+            else:
+                correct_input = True
 
-        print(setting_table)
-        setting_number = input("Please enter the ID of the Architecture-Setting from the table above:")
+        model_id = config_number
 
-        if not represents_int(setting_number):
-            print("ERROR: Please enter an number!")
-            time.sleep(5)
-        elif (int(setting_number) < 1) or (int(setting_number) > last_row):
-            print("ERROR: Please enter an number between 1 and " + str(last_row) + " !")
-            time.sleep(5)
-        else:
-            correct_input_2 = True
-            result = get_model_and_save_path(model_id,setting_number)
-            model = result[0]
-            save_path = result[1]
+        setting_table = create_pretty_table_network_configuration(model_id)
+        last_row_2 = setting_table[1]
+        setting_table = setting_table[0]
+        correct_input_3 = False
 
-    return [model, save_path]
+        while not correct_input_3:
+            clear = Clear()
+
+            print(setting_table)
+            setting_number = input("Please enter the ID of the Architecture-Setting from the table above:")
+
+            if not represents_int(setting_number):
+                print("ERROR: Please enter an number!")
+            elif (int(setting_number) < 1) or (int(setting_number) > last_row_2):
+                print("ERROR: Please enter an number between 1 and " + str(last_row_2) + " !")
+            else:
+                correct_input_3 = True
+                result = get_model_and_save_path(model_id,setting_number)
+                model = result[0]
+                save_path = result[1]
+                chosen_models.append([model, save_path])
+                first_model = False
+    return chosen_models
 
 
-def generate_features_main(model, save_path):
+def generate_features_main(choosen_models):
 
     clear = Clear()
     ask_generate_features = input("Generate features ? Enter 1 for yes:")
@@ -277,30 +302,34 @@ def generate_features_main(model, save_path):
     if ask_generate_features == "1":
         print("Features for all subjects and stimuli will be generated.")
         print("This might take a while please be patient.")
-        gf.run_torchvision_model(model, save_path)
+        for model_info in choosen_models:
+            save_path = model_info[1]
+            model = model_info[0]
+            print("Generating features in:", save_path)
+            gf.run_torchvision_model(model, save_path)
     else:
         print("WARNING: Features will not be generated!")
-        time.sleep(5)
 
+def generate_rdms_main(choosen_model_info):
 
-def generate_rdms_main(save_path):
 
     clear = Clear()
     list_of_subs = helper.get_sub_list()
     generate_rdms = input("Generate RDMs ? Enter 1 for yes:")
     if generate_rdms == "1":
-        print("RDMs will be created in: " + save_path )
-        for sub in tqdm(list_of_subs):
-            RDMs.create_rdms(save_path, sub)
-        RDMs.create_average_rdm(save_path)
-        RDMs.visualize_rdms(save_path)
+        for model_info in choosen_model_info:
+            save_path = model_info[1]
+            print("RDMs will be created in: " + save_path )
+            for sub in tqdm(list_of_subs):
+                RDMs.create_rdms(save_path, sub)
+            RDMs.create_average_rdm(save_path)
+            RDMs.visualize_rdms(save_path)
 
     else:
         print("WARNING: RDMs will not be generated!")
-        time.sleep(5)
 
 
-def multiple_regression_main(save_path):
+def multiple_regression_main(choosen_model_info):
 
     clear = Clear()
     sep = helper.check_platform()
@@ -311,113 +340,118 @@ def multiple_regression_main(save_path):
         option = input("Please choose option (1/2):")
 
         if option == "1":
-
-            save_path_2 = save_path + sep + "average_results"
-            RDM_Evaluation.multiple_regression_average_results(save_path_2)
-            print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
-            option2 = input("Would you like to also create option 2? Enter 1 for yes:")
-            if option2 == "1":
-                RDM_Evaluation.multiple_regression_solo_averaged(save_path)
-                print(
-                    "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
-
-        if option == "2":
-            save_path_2 = save_path + sep + "average_results"
-            RDM_Evaluation.multiple_regression_solo_averaged(save_path)
-            print("Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
-            option1 = input("Would you like to also create option 1? Enter 1 for yes:")
-            if option1 == "1":
+            for model_info in choosen_model_info:
+                save_path = model_info[1]
+                save_path_2 = save_path + sep + "average_results"
                 RDM_Evaluation.multiple_regression_average_results(save_path_2)
                 print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
+                option2 = input("Would you like to also create option 2? Enter 1 for yes:")
+                if option2 == "1":
+                    RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+                    print(
+                        "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
+
+        if option == "2":
+            for model_info in choosen_model_info:
+                save_path = model_info[1]
+                save_path_2 = save_path + sep + "average_results"
+                RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+                print("Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
+                option1 = input("Would you like to also create option 1? Enter 1 for yes:")
+                if option1 == "1":
+                    RDM_Evaluation.multiple_regression_average_results(save_path_2)
+                    print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
 
 
-def rsa_heatmap_main(save_path):
+def rsa_heatmap_main(choosen_model_info):
 
     clear = Clear()
     create_rsa_heatmap = input("Create RSA (Brain RDMs vs Network RDMs)? Enter 1 for yes:")
 
     if create_rsa_heatmap == "1":
+        for model_info in choosen_model_info:
+            save_path = model_info[1]
+            finished = 0
+            while finished == 0:
+                clear = Clear()
+                print("Choose option for brain rdms.")
+                print("Enter 1 for TaskBoth")
+                print("Enter 2 for TaskNum")
+                print("Enter 3 for TaskSize")
+                choose_option = input("Enter the option (1,2,3):")
+                if not represents_int(choose_option):
+                    print("Please enter a number between 1-3")
+                    rsa_heatmap_main(save_path)
+                elif not (choose_option in ["1", "2", "3"]):
+                    print("Please enter a number between 1-3")
+                    rsa_heatmap_main(save_path)
+                choose_option = int(choose_option) - 1
+                RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
+                print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
+                finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
+                if not represents_int(finished_check):
+                    finished = 1
+                elif int(finished_check) != 1:
+                    finished = 1
 
-        finished = 0
-        while finished == 0:
-            clear = Clear()
-            print("Choose option for brain rdms.")
+
+def evaluate_noise_main(choosen_model_info):
+
+    clear = Clear()
+    create_noise_ceiling = input("Perform noise ceiling? Enter 1 for yes:")
+
+    if create_noise_ceiling == "1":
+        for model_info in choosen_model_info:
+            save_path = model_info[1]
+            print("Choose option of Brain RDMs")
             print("Enter 1 for TaskBoth")
             print("Enter 2 for TaskNum")
             print("Enter 3 for TaskSize")
             choose_option = input("Enter the option (1,2,3):")
             if not represents_int(choose_option):
                 print("Please enter a number between 1-3")
-                rsa_heatmap_main(save_path)
+                evaluate_noise_main(save_path)
             elif not (choose_option in ["1", "2", "3"]):
                 print("Please enter a number between 1-3")
-                rsa_heatmap_main(save_path)
+                evaluate_noise_main(save_path)
+
             choose_option = int(choose_option) - 1
-            RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
-            print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
-            finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
-            if not represents_int(finished_check):
-                finished = 1
-            elif int(finished_check) != 1:
-                finished = 1
+            RDM_Evaluation.noise_ceiling_main(choose_option, save_path)
 
-
-def evaluate_noise_main(save_path):
-
-    clear = Clear()
-    create_noise_ceiling = input("Perform noise ceiling? Enter 1 for yes:")
-
-    if create_noise_ceiling == "1":
-
-        print("Choose option of Brain RDMs")
-        print("Enter 1 for TaskBoth")
-        print("Enter 2 for TaskNum")
-        print("Enter 3 for TaskSize")
-        choose_option = input("Enter the option (1,2,3):")
-        if not represents_int(choose_option):
-            print("Please enter a number between 1-3")
-            evaluate_noise_main(save_path)
-        elif not (choose_option in ["1", "2", "3"]):
-            print("Please enter a number between 1-3")
-            evaluate_noise_main(save_path)
-
-        choose_option = int(choose_option) - 1
-        RDM_Evaluation.noise_ceiling_main(choose_option,save_path)
 
 def main_ui():
 
+
     # 1.) Choose Model
-    model_info = choose_model_main()
-    model = model_info[0]
-    save_path = model_info[1]
+    choosen_models_info = choose_model_main()
 
     # 2.) Generate features:
-    generate_features_main(model, save_path)
+    generate_features_main(choosen_models_info)
 
     # 3.) Generate RDMs
     try:
-        generate_rdms_main(save_path)
+        generate_rdms_main(choosen_models_info)
     except FileNotFoundError:
         print("WARNING: RDMS could not be created!")
         print("Please make sure that features were created before.")
 
     # 4.) Multiple Regression
     try:
-        multiple_regression_main(save_path)
+        multiple_regression_main(choosen_models_info)
     except FileNotFoundError:
         print("WARNING: Multiple regression could not be performed!")
         print("Please make sure that RDMs were created before")
 
     # 5.) Create RSA heatmap
     try:
-        rsa_heatmap_main(save_path)
+        rsa_heatmap_main(choosen_models_info)
     except FileNotFoundError:
         print("WARNING: RSA could not be performed!")
         print("Please make sure that RDMs were generated before.")
 
     # 6.) Noise ceiling evaluation
     try:
-        evaluate_noise_main(save_path)
+        evaluate_noise_main(choosen_models_info)
     except FileNotFoundError:
         print("Warning: Noise Ceiling could not be performed!")
         print("Please make sure that RDMs were generated before.")
@@ -426,7 +460,7 @@ def main_ui():
     delete_files_bool = input("Delete npz files to save memory? Enter 1 for yes:")
     if delete_files_bool == "1":
         print("NPZ files will be deleted!")
-        helper.delete_files(save_path)
+        helper.delete_files(choosen_models_info)
     else:
         print("NPZ files will not be deleted!")
 

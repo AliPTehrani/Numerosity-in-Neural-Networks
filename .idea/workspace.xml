@@ -21,8 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matlab_rdms.py" beforeDir="false" afterPath="$PROJECT_DIR$/matlab_rdms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI_main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +68,7 @@
       <recent name="C:\Users\Ali\PycharmProjects\untitled2\Numerosity-in-Neural-Networks\Google Colab" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.matlab_rdms">
+  <component name="RunManager" selected="Python.UI_main">
     <configuration name="RDM_Evaluation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Numerosity-in-Neural-Networks" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -181,8 +180,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.matlab_rdms" />
         <item itemvalue="Python.UI_main" />
+        <item itemvalue="Python.matlab_rdms" />
         <item itemvalue="Python.generate_RDM" />
         <item itemvalue="Python.RDM_Evaluation" />
         <item itemvalue="Python.helper" />
