@@ -91,6 +91,60 @@ def delete_files(result_path):
     for npz_file in npz_files:
         os.remove(npz_file)
 
-#def sort_results():
+
+def get_lower_triangular(rdm):
+    """Get lower triangle of a RDM"""
+    num_conditions = rdm.shape[0]
+    return rdm[np.tril_indices(num_conditions, 1)]
+
+
+def remove_diagonal(rdm_lower_triangle):
+    """Removes the diagonal of zeros and one value before the zero from the lower triangle of the rdm"""
+
+    index = 1
+    counter = 2
+    rdm_lower_triangle = np.delete(rdm_lower_triangle, 0)
+    loops = 1
+
+    while loops != 18:
+        rdm_lower_triangle = np.delete(rdm_lower_triangle, index)
+        rdm_lower_triangle = np.delete(rdm_lower_triangle, index)
+        index += counter
+        counter += 1
+        loops += 1
+
+    return rdm_lower_triangle
+
+def get_brain_regions_npz(option):
+    """
+    Loads the RDMs for the brain_region given one of the three options :
+    :param option:  Int representing  Option = 0 taskBoth / 1 TaskNum / 2 TaskSize
+    :return: brain_region_dict  : Keys : Brain regions , Values : Loaded npz files of brain region RDM
+    """
+
+    # Get option as filter to search for correct npz files
+    sep = check_platform()
+    option = ["taskBoth", "taskNum", "taskSize"][option]
+    cwd = os.getcwd()
+    search_path = os.getcwd() + sep + "RSA_matrices"
+    all_rsa_files = glob.glob(search_path + "/*" + ".npz")
+    brain_region_dict = {}
+    filtered_files = []
+    # Filter them on the correct option
+    for file in all_rsa_files:
+        if (option in file):
+            filtered_files.append(file)
+
+    for filtered_file in filtered_files:
+        average_rdm = []
+        loadednpz = loadnpz(filtered_file)
+        filename = filtered_file.split(check_platform())[-1]
+        brain_region = filename.split("_")
+        brain_region = brain_region[-1].split(".")[0]
+        brain_region_dict[brain_region] = loadednpz
+
+    return brain_region_dict
+
+
 
 

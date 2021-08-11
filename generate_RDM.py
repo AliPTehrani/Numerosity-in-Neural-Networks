@@ -220,7 +220,7 @@ def create_average_rdm(result_path):
             result_array += loaded_npz.f.arr_0
 
         result_array = result_array / len(list_of_subs)
-        save_path = os.path.join(result_path, "average_results")
+        save_path = os.path.join(result_path, "average_rdms")
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         np.savez((save_path + sep + layer + ".npz"), result_array)
@@ -251,7 +251,7 @@ def create_rdms(result_path, sub):
 def visualize_rdms(result_path):
     """This function visualizes every RDM"""
     list_of_subs = helper.get_sub_list()
-    list_of_subs.append("average_results")
+    list_of_subs.append("average_rdms")
     # Get names of the layers
     path = result_path + helper.check_platform() + "sub04"
     layer_names = helper.get_layers_ncondns(path)[1]
@@ -261,7 +261,7 @@ def visualize_rdms(result_path):
         # For every layer
         for layer in layer_names:
             # Visualize RDM
-            if sub == "average_results":
+            if sub == "average_rdms":
                 path = os.path.join(result_path, sub, layer + ".npz")
             else:
                 path = os.path.join(result_path, sub + "_rdms", layer + ".npz")

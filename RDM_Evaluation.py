@@ -48,18 +48,18 @@ def get_lowertriangular(rdm):
 
 def compare_rdms(network_rdm, brain_rdms):
     """Compares two RDM using only the lower triangle and Spearman-correlation"""
-    """
+
     
     # Spearman Correlation group averaged
     # Load npz files from given path
-    if type(rdm_path1) == np.ndarray:
-        rdm1 = rdm_path1
-        rdm2 = rdm_path2
-    else:
-        loadednpz1 = helper.loadnpz(rdm_path1)
-        loadednpz2 = helper.loadnpz(rdm_path2)
+    if type(network_rdm) != np.ndarray:
+        loadednpz1 = helper.loadnpz(network_rdm)
+        loadednpz2 = helper.loadnpz(brain_rdms)
         rdm1 = loadednpz1.f.arr_0
         rdm2 = loadednpz2.f.arr_0
+    else:
+        rdm1 = network_rdm
+        rdm2 = brain_rdms
 
     # Get lower triangle of rdm
     rdm1 = get_lowertriangular(rdm1)
@@ -70,8 +70,7 @@ def compare_rdms(network_rdm, brain_rdms):
     rdm2 = remove_diagonal(rdm2)
 
     result = RSA_spearman(rdm1, rdm2)
-    """
-    """
+
     #Spearman Correlation not group averaged 
     network_rdm = remove_diagonal(get_lowertriangular(network_rdm))
     brain_rdms = [remove_diagonal(get_lowertriangular(brain_rdm)) for brain_rdm in brain_rdms]
@@ -93,7 +92,7 @@ def compare_rdms(network_rdm, brain_rdms):
     result = np.mean(corr_squared)
 
     return result
-
+    """
 
 def z_transform_matrix(lower_triangle_matrix):
     """Z-transform every value inside array"""
@@ -209,7 +208,7 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
     plt.plot(x_coordinates, y_coordinates[4], color="red",  marker="v", label="Density")
 
     sep = helper.check_platform()
-    save_path = save_path + sep + "Multiple_regression_" + ["task_both","task_num","task_size"][int(option)]
+    save_path = save_path + sep + "Multiple_regression_" + option
 
     plt.xlabel("layer")
     plt.ylabel("beta weights")
@@ -267,7 +266,7 @@ def multiple_regression_solo_averaged(path):
     sep = helper.check_platform()
     layer_path = path + sep + "sub04"
     layer_names = helper.get_layers_ncondns(layer_path)[1]
-    save_path = path + sep + "average_results"
+    save_path = path + sep + "average_rdms"
     result_dict = {}
     standard_error = {}
     for layer_name in layer_names:
@@ -305,10 +304,7 @@ def create_brain_region_rdm_dict(option):
     # Get option as filter to search for correct npz files
     sep = helper.check_platform()
     option = ["taskBoth", "taskNum", "taskSize"][option]
-    # All rsa_files as npz
-    #all_rsa_files  = glob.glob("RSA_Matrices" + "/*.npz")
-    #network_rdms = glob.glob(average_results + "/*" + ".npz", recursive=True)
-    #average_results = result_path + sep + "average_results"
+
     cwd = os.getcwd()
     search_path = os.getcwd() + sep + "RSA_matrices"
     all_rsa_files = glob.glob(search_path + "/*" + ".npz")
@@ -340,11 +336,9 @@ def create_brain_region_rdm_dict(option):
 
     return brain_rdms_dictionary
 
+
 def sq(x):
     return squareform(x, force = "tovector", checks=False)
-
-
-
 
 
 def visualize_rsa_matrix(result_dict,layer_list, option):
@@ -383,23 +377,27 @@ def create_rsa_matrix(option, result_path):
 
     # Calculating an result dictionary
 
-    result_dict = {}
+    result_dict_squared_regression = {}
+    result_dict_spearman_correlation = {}
     for brain_region in brain_rdms:
         brain_rdms[brain_region] = brain_rdms[brain_region].f.arr_0
         brain_rdm = brain_rdms[brain_region]
-        result_dict[brain_region] = []
+        result_dict_squared_regression[brain_region] = []
+        result_dict_spearman_correlation[brain_region] = []
+
         for layer in layer_list:
-            network_path = result_path + sep + "average_results" + sep + layer + ".npz"
+            network_path = result_path + sep + "average_rdms" + sep + layer + ".npz"
             network_rdm = helper.loadnpz(network_path)
             network_rdm = network_rdm.f.arr_0
             network_rdm = remove_diagonal(get_lowertriangular(network_rdm))
-            #rsa_result = compare_rdms(network_rdm,brain_rdm)
-            rsa_result = evaluate_fmri(network_rdm , brain_rdm)[0]
-            result_dict[brain_region].append(rsa_result)
+            #rsa_result_spearman = compare_rdms(network_rdm,brain_rdm)
+            rsa_result_squared = evaluate_fmri(network_rdm , brain_rdm)[0]
+            #result_dict_spearman_correlation[brain_region].append(rsa_result_spearman)
+            result_dict_squared_regression[brain_region].append(rsa_result_squared)
 
     sep = helper.check_platform()
-    save_path = (result_path + sep + "average_results" + sep + "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
-    visualize_rsa_matrix(result_dict, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
+    save_path = (result_path + sep + "average_rdms" + sep + "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
+    visualize_rsa_matrix(result_dict_squared_regression, layer_list, ["taskBoth", "taskNum", "taskSize"][option])
     plt.savefig(save_path)
     plt.close()
 
@@ -553,8 +551,6 @@ def scan_result(out,noise_ceiling):
 
 
 def evaluate_fmri(layer_rdm,fmri_rdms):
-    #corr = [RSA_spearman(layer_rdm,remove_diagonal(get_lowertriangular(fmri_rdm))) for fmri_rdm in fmri_rdms]
-    #corr = [np.corrcoef(layer_rdm,remove_diagonal((get_lowertriangular(fmri_rdm)))) for fmri_rdm in fmri_rdms]
 
     corr = []
     layer_rdm = layer_rdm.reshape(-1,1)
@@ -591,7 +587,7 @@ def noise_ceiling_main(option,network_save_path):
     for layer in layer_names:
         result_dict[layer] = {}
         for brain_region in brain_regions:
-            layer_path = network_save_path + sep + "average_results" + sep + layer + ".npz"
+            layer_path = network_save_path + sep + "average_rdms" + sep + layer + ".npz"
             layer_rdm = helper.loadnpz(layer_path)
             layer_rdm = layer_rdm.f.arr_0
             layer_rdm = remove_diagonal(get_lowertriangular(layer_rdm))
@@ -617,9 +613,8 @@ def save_as_xlsx(result_dict, layer_names,save_path):
     df = pd.DataFrame(data, columns=["ROI","network layer"," R²", "noise ceilling %", "significance", "lower noise ceilling", "upper noise ceilling"])
 
     sep = helper.check_platform()
-    save_path_excel = save_path + sep + "average_results" + sep + "R² and noise ceilling results.xlsx"
+    save_path_excel = save_path + sep + "average_rdms" + sep + "R² and noise ceilling results.xlsx"
     df.to_excel(save_path_excel,sheet_name="results", index=False)
-
 
 
 def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
@@ -628,7 +623,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path):
     sep = helper.check_platform()
     layer_path = save_path + sep + "sub04"
     layer_names = helper.get_layers_ncondns(layer_path)[1]
-    save_path = save_path + sep + "average_results"
+    save_path = save_path + sep + "average_rdms"
     colours = ['#fbb4ae',
                '#b3cde3',
                '#ccebc5',

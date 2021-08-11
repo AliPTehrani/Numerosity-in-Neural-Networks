@@ -1,6 +1,8 @@
 from prettytable import PrettyTable
 from prettytable import ALL as ALL
 import time
+
+import RDM_Evaluations.RSA_NoiseCeilling
 from networks.alexnet import *
 from networks.cornet_rt import *
 from networks.cornet_s import *
@@ -14,6 +16,9 @@ from networks.vgg16_bn import *
 from networks.vgg16 import *
 from networks.vgg19 import *
 from networks.vgg19_bn import *
+import RDM_Evaluations.MultipleRegression as MultipleRegression
+import RDM_Evaluations.RSA as RSA
+import RDM_Evaluations.RSA_NoiseCeilling as Noise_RSA
 import os
 import generate_features as gf
 import helper as helper
@@ -310,6 +315,7 @@ def generate_features_main(choosen_models):
     else:
         print("WARNING: Features will not be generated!")
 
+
 def generate_rdms_main(choosen_model_info):
 
 
@@ -332,6 +338,7 @@ def generate_rdms_main(choosen_model_info):
 def multiple_regression_main(choosen_model_info):
 
     clear = Clear()
+
     sep = helper.check_platform()
     create_multiple_regression_graph = input("Generate beta weights Graph (Multiple Regression)? Enter 1 for yes:")
     if create_multiple_regression_graph == "1":
@@ -342,24 +349,28 @@ def multiple_regression_main(choosen_model_info):
         if option == "1":
             for model_info in choosen_model_info:
                 save_path = model_info[1]
-                save_path_2 = save_path + sep + "average_results"
-                RDM_Evaluation.multiple_regression_average_results(save_path_2)
-                print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
-                option2 = input("Would you like to also create option 2? Enter 1 for yes:")
-                if option2 == "1":
-                    RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+                MultipleRegression.multiple_regression_average_results(save_path)
+                print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path)
+            option2 = input("Would you like to also create option 2? Enter 1 for yes:")
+            if option2 == "1":
+                for model_info in choosen_model_info:
+                    save_path = model_info[1]
+                    MultipleRegression.multiple_regression_solo_averaged(save_path)
                     print(
-                        "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
+                        "Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path)
 
         if option == "2":
             for model_info in choosen_model_info:
                 save_path = model_info[1]
-                save_path_2 = save_path + sep + "average_results"
-                RDM_Evaluation.multiple_regression_solo_averaged(save_path)
+                save_path_2 = save_path + sep + "RDM_Evaluation_Results"
+                MultipleRegression.multiple_regression_solo_averaged(save_path)
                 print("Multiple regression was performed on every subject. Averaged Graph is created in: " + save_path_2)
-                option1 = input("Would you like to also create option 1? Enter 1 for yes:")
-                if option1 == "1":
-                    RDM_Evaluation.multiple_regression_average_results(save_path_2)
+            option1 = input("Would you like to also create option 1? Enter 1 for yes:")
+            if option1 == "1":
+                for model_info in choosen_model_info:
+                    save_path = model_info[1]
+                    save_path_2 = save_path + sep + "average_results"
+                    MultipleRegression.multiple_regression_average_results(save_path)
                     print("Multiple regression was performed on average RDMs. Graph is created in: " + save_path_2)
 
 
@@ -369,30 +380,31 @@ def rsa_heatmap_main(choosen_model_info):
     create_rsa_heatmap = input("Create RSA (Brain RDMs vs Network RDMs)? Enter 1 for yes:")
 
     if create_rsa_heatmap == "1":
-        for model_info in choosen_model_info:
-            save_path = model_info[1]
-            finished = 0
-            while finished == 0:
-                clear = Clear()
-                print("Choose option for brain rdms.")
-                print("Enter 1 for TaskBoth")
-                print("Enter 2 for TaskNum")
-                print("Enter 3 for TaskSize")
-                choose_option = input("Enter the option (1,2,3):")
-                if not represents_int(choose_option):
-                    print("Please enter a number between 1-3")
-                    rsa_heatmap_main(save_path)
-                elif not (choose_option in ["1", "2", "3"]):
-                    print("Please enter a number between 1-3")
-                    rsa_heatmap_main(save_path)
+        finished = 0
+        while finished == 0:
+            clear = Clear()
+            print("Choose option for brain rdms.")
+            print("Enter 1 for TaskBoth")
+            print("Enter 2 for TaskNum")
+            print("Enter 3 for TaskSize")
+            choose_option = input("Enter the option (1,2,3):")
+            if not represents_int(choose_option):
+                print("Please enter a number between 1-3")
+                rsa_heatmap_main(choosen_model_info)
+            elif not (choose_option in ["1", "2", "3"]):
+                print("Please enter a number between 1-3")
+                rsa_heatmap_main(choosen_model_info)
+
+            for model_info in choosen_model_info:
+                save_path = model_info[1]
                 choose_option = int(choose_option) - 1
-                RDM_Evaluation.create_rsa_matrix(choose_option, save_path)
+                RSA.create_rsa_matrix(choose_option, save_path)
                 print("Heatmap was created in:" + " " + save_path + "\\" + "average_results")
-                finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
-                if not represents_int(finished_check):
-                    finished = 1
-                elif int(finished_check) != 1:
-                    finished = 1
+            finished_check = input("Would you like to create more heatmaps? Enter 1 for yes:")
+            if not represents_int(finished_check):
+                finished = 1
+            elif int(finished_check) != 1:
+                finished = 1
 
 
 def evaluate_noise_main(choosen_model_info):
@@ -401,23 +413,26 @@ def evaluate_noise_main(choosen_model_info):
     create_noise_ceiling = input("Perform noise ceiling? Enter 1 for yes:")
 
     if create_noise_ceiling == "1":
+        #for model_info in choosen_model_info:
+
+        print("Choose option of Brain RDMs")
+        print("Enter 1 for TaskBoth")
+        print("Enter 2 for TaskNum")
+        print("Enter 3 for TaskSize")
+        choose_option = input("Enter the option (1,2,3):")
+        if not represents_int(choose_option):
+            print("Please enter a number between 1-3")
+            evaluate_noise_main(choosen_model_info)
+        elif not (choose_option in ["1", "2", "3"]):
+            print("Please enter a number between 1-3")
+            evaluate_noise_main(choosen_model_info)
+
+
+        choose_option = int(choose_option) - 1
         for model_info in choosen_model_info:
             save_path = model_info[1]
-            print("Choose option of Brain RDMs")
-            print("Enter 1 for TaskBoth")
-            print("Enter 2 for TaskNum")
-            print("Enter 3 for TaskSize")
-            choose_option = input("Enter the option (1,2,3):")
-            if not represents_int(choose_option):
-                print("Please enter a number between 1-3")
-                evaluate_noise_main(save_path)
-            elif not (choose_option in ["1", "2", "3"]):
-                print("Please enter a number between 1-3")
-                evaluate_noise_main(save_path)
-
-            choose_option = int(choose_option) - 1
-            RDM_Evaluation.noise_ceiling_main(choose_option, save_path)
-
+            #RDM_Evaluation.noise_ceiling_main(choose_option, save_path)
+            Noise_RSA.noise_ceiling_main(choose_option,save_path)
 
 def main_ui():
 
