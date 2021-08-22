@@ -20,15 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluations/MultipleRegression.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluations/MultipleRegression.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluations/RSA.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluations/RSA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluations/RSA_NoiseCeilling.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluations/RSA_NoiseCeilling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generate_RDM.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_RDM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matlab_rdms.py" beforeDir="false" afterPath="$PROJECT_DIR$/matlab_rdms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networks/vgg19.py" beforeDir="false" afterPath="$PROJECT_DIR$/networks/vgg19.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

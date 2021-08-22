@@ -86,10 +86,11 @@ def loadnpz(npzfile):
     return np.load(npzfile, allow_pickle=True)
 
 
-def delete_files(result_path):
-    npz_files = glob.glob(result_path + "/**/*.npz", recursive=True)
-    for npz_file in npz_files:
-        os.remove(npz_file)
+def delete_files(result_paths):
+    for result_path in result_paths:
+        npz_files = glob.glob(result_path + "/**/*.npz", recursive=True)
+        for npz_file in npz_files:
+            os.remove(npz_file)
 
 
 def get_lower_triangular(rdm):
