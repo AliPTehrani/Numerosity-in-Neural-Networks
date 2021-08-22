@@ -171,7 +171,7 @@ def scan_result(out,noise_ceiling,squared):
 
     return output_dict
 
-def save_as_xlsx(result_dict, layer_names,save_path):
+def save_as_xlsx(result_dict, layer_names,save_path,squared=False):
 
     brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
     brain_regions.reverse()
@@ -185,8 +185,13 @@ def save_as_xlsx(result_dict, layer_names,save_path):
     df = pd.DataFrame(data, columns=["ROI","network layer"," R²", "noise ceilling %", "significance", "lower noise ceilling", "upper noise ceilling"])
 
     sep = helper.check_platform()
-    save_path_excel = (save_path + sep + "RDM_Evaluation_Results" + sep + "R2_squared_linear_regression" + sep +
-    "R² and noise ceilling results.xlsx")
+    save_path_excel = ""
+    if squared:
+        save_path_excel = (save_path + sep + "RDM_Evaluation_Results" + sep + "R2_squared_linear_regression" + sep +
+        "R² and noise ceilling results.xlsx")
+    else:
+        save_path_excel = (save_path + sep + "RDM_Evaluation_Results" + sep + "R_spearman" + sep +
+        "R and noise ceilling results.xlsx")
     df.to_excel(save_path_excel,sheet_name="results", index=False)
 
 
@@ -359,8 +364,9 @@ def noise_ceiling_main(option,network_save_path):
             result_dict_spearman_correlation[layer][brain_region] = scan_result(result_for_layer_spearman,
                                                     brain_region_noise_dict_spearman_correlation[brain_region], False)
 
-    save_as_xlsx(result_dict_squared_correlation,layer_names,network_save_path)
+    save_as_xlsx(result_dict_squared_correlation,layer_names,network_save_path,squared=True)
     visualize_noise_graph(result_dict_squared_correlation,brain_region_noise_dict_squared_correlation,
                           network_save_path, True)
+    save_as_xlsx(result_dict_spearman_correlation,layer_names,network_save_path,squared=False)
     visualize_noise_graph(result_dict_spearman_correlation, brain_region_noise_dict_spearman_correlation,
                           network_save_path, False)
