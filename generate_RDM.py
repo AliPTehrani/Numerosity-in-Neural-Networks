@@ -92,7 +92,7 @@ def average_all_npz(result_path, sub):
         # Fill dictionary {test case 1 : [all arrays summed, frequency] , testcase2 : ... , ...}
         # If frequency == 0: sum tensors on empty list
         if position_and_frequency[test_case_of_npz][1] == 0:
-            x_path = (path + sep +file_name)
+            x_path = (path + sep + file_name)
             position_and_frequency[test_case_of_npz][0] = sum_tensors([],
                                                                helper.loadnpz(x_path))
         # If frequency /= 0: sum tensors
@@ -132,7 +132,7 @@ def convert_arrays_to_layer(averaged_array_dict, layers):
 
 def get_average_of_voxels(averaged_array_dict):
     """This function calculates the average for every unit of the "voxel" (2d part of tensor) """
-    #average_list = [[], [], [], [], [], [], [], []]
+    # average_list = [[], [], [], [], [], [], [], []]
     average_list = []
     for layer in averaged_array_dict:
         average_list.append([])
@@ -145,8 +145,8 @@ def get_average_of_voxels(averaged_array_dict):
         # for every test case
         for test_case in layers_dict[layer_name]:    # 0 ... 17
             voxel_averages = []
-            for first_dimension in test_case:   #(1,64,55,55) -> (64,55,55)
-                for second_dimension in first_dimension:  #(64,55,55) -> (55,55)
+            for first_dimension in test_case:   # (1,64,55,55) -> (64,55,55)
+                for second_dimension in first_dimension:  # (64,55,55) -> (55,55)
                     mean_of_voxel = np.mean(second_dimension)
                     voxel_averages.append(mean_of_voxel)
 
@@ -285,5 +285,5 @@ def visualize_rdms(result_path):
             plt.close()
 
 
-#create_rdms("Alexnet pretrained results", "sub04")
-#visualize_rdms("Alexnet pretrained results")
+# create_rdms("Alexnet pretrained results", "sub04")
+# visualize_rdms("Alexnet pretrained results")

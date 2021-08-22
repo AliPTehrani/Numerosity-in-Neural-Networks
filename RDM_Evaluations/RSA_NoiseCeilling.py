@@ -362,5 +362,5 @@ def noise_ceiling_main(option,network_save_path):
     save_as_xlsx(result_dict_squared_correlation,layer_names,network_save_path)
     visualize_noise_graph(result_dict_squared_correlation,brain_region_noise_dict_squared_correlation,
                           network_save_path, True)
-    visualize_noise_graph(result_dict_squared_correlation, brain_region_noise_dict_squared_correlation,
+    visualize_noise_graph(result_dict_spearman_correlation, brain_region_noise_dict_spearman_correlation,
                           network_save_path, False)

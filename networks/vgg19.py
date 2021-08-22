@@ -34,7 +34,6 @@ class VGG19Net(nn.Module):
         features = []
         for name, layer in self.vgg_feats._modules.items():
             x = layer(x)
-            print(name)
             if vgg_feat_list[int(name)] in self.select_feats:
                 features.append(x)
 

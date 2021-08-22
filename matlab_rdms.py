@@ -3,8 +3,7 @@ import glob
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-
-import RDM_Evaluation
+import RDM_Evaluations.MultipleRegression as MulitpleRegression
 import helper
 
 
@@ -63,10 +62,10 @@ def multiple_regression_graph(option):
         path = "RSA_matrices" + sep + "RDM_allsub_" + task + "_" + brain_region + ".npz"
         brain_rdm = helper.loadnpz(path)
         brain_rdm = brain_rdm.f.arr_0
-        brain_rdm = np.mean(brain_rdm,axis = 0)
-        result = RDM_Evaluation.multiple_regression(brain_rdm)
+        brain_rdm = np.mean(brain_rdm, axis=0)
+        result = MulitpleRegression.multiple_regression(brain_rdm)
         result_dict[brain_region] = result
-        RDM_Evaluation.visualize_multiple_regression(result_dict,"Alexnet pretrained results",str(option),[])
+        MulitpleRegression.visualize_multiple_regression(result_dict,"Alexnet pretrained results",str(option),[])
 
 
 #read_in_rdms_matlab()

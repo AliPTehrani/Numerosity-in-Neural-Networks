@@ -23,7 +23,6 @@ import os
 import generate_features as gf
 import helper as helper
 import generate_RDM as RDMs
-import RDM_Evaluation
 from tqdm import tqdm
 '''
 This file is used to run the main function.

@@ -170,7 +170,7 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
     :param option: Just a String to clarify if it is the plFot for option 1 or option 2
     :param standard_error_dict: Optional list for option 2. It contains the results for every subject, so the standard
     error can be calculated among all subjects.
-    :return: Nothing , saves plot of the multiple regression into the given direcotry
+    :return: Nothing , saves plot of the multiple regression into the given directory
     """
 
     #
@@ -196,7 +196,7 @@ def visualize_multiple_regression(results_dict, save_path, option, standard_erro
     plt.title("Multiple regression on layer RDMs")
     plt.legend( bbox_to_anchor = (1.05, 1), loc = 'upper left')
 
-
+    plt.xticks(rotation=45)
     if standard_error_dict != []:
         list_of_errors = []
         for layer in standard_error_dict:
@@ -237,7 +237,7 @@ def multiple_regression_solo_averaged(path):
     """
     Option 2 : Performs multiple regression on all different subject x layer RDMs. Averages the results afterwards.
     :param path: Path were all the directories for the subjects can be found.
-    :return: Nothing , saves the plot in the directorie path + average_rdms
+    :return: Nothing , saves the plot in the directory path + average_rdms
     """
     """This function performs multiple regression for every npz and then calculates the average and visualizes it"""
     list_of_subs = helper.get_sub_list()

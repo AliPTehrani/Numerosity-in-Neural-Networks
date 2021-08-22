@@ -75,7 +75,7 @@ def visualize_rsa_matrix(result_dict,layer_list, option,correlation):
         cbar = {'label': 'R2 Score from linear regression'}
     if correlation == 2:
         cbar = {'label': 'R Score from Spearman correlation'}
-    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno", vmin=0  #vmax=1
+    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno" #vmin=0  #vmax=1
         ,cbar_kws = cbar)   #,cbar_kws={'label': 'Spearman correlation coefficient'}) #cbar_kws={'label': 'R2 Score from linear regression'})#
     heatmap.figure.axes[-1].yaxis.label.set_size(13)
 
@@ -134,7 +134,7 @@ def create_rsa_matrix(option, result_path):
     if not os.path.exists(directory):
         os.makedirs(directory)
     save_path = (result_path + sep + "RDM_Evaluation_Results" + sep + "R_Spearman" + sep + "RSA" + "_" + ["taskBoth", "taskNum", "taskSize"][option])
-    visualize_rsa_matrix(result_dict_squared_regression, layer_list, ["taskBoth", "taskNum", "taskSize"][option],2)
+    visualize_rsa_matrix(result_dict_spearman_correlation, layer_list, ["taskBoth", "taskNum", "taskSize"][option],2)
 
     plt.savefig(save_path,bbox_inches='tight')
     plt.close()
