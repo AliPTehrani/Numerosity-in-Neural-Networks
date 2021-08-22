@@ -21,7 +21,14 @@
   <component name="ChangeListManager">
     <list default="true" id="7bce25d8-8665-4674-a72f-33b61bc9f3a3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RDM_Evaluations/RSA_NoiseCeilling.py" beforeDir="false" afterPath="$PROJECT_DIR$/RDM_Evaluations/RSA_NoiseCeilling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/Alexnet random results 2/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/Alexnet random results 2/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/Alexnet random results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/Alexnet random results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/ResNet34 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/ResNet34 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/Resnet152 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/Resnet152 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/VGG11 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/VGG11 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/VGG11_bn pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/VGG11_bn pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/VGG19 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/VGG19 pretrained results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_Collection/VGG19 random results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Results_Collection/VGG19 random results/RDM_Evaluation_Results/R2_squared_linear_regression/R² and noise ceilling results.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +60,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
