@@ -163,7 +163,7 @@ def get_model_and_save_path(model_id,setting_id):
         if setting_index == 0:
             result = [resnet18(pretrained=True), "Resnet18 pretrained results"]
         elif setting_index == 1:
-            result = [resnet18(pretrained=False), "Resnet18 random results"],
+            result = [resnet18(pretrained=False), "Resnet18 random results"]
         elif setting_index == 2:
             result = [resnet34(pretrained=True), "Resnet34 pretrained results"]
         elif setting_index == 3:
@@ -186,7 +186,7 @@ def get_model_and_save_path(model_id,setting_id):
         if setting_index == 0:
             result = [VGG11Net(is_pretrained=True), "VGG11 pretrained results"]
         elif setting_index == 1:
-            result = [VGG11Net(is_pretrained=False), "VGG11 random results"],
+            result = [VGG11Net(is_pretrained=False), "VGG11 random results"]
         elif setting_index == 2:
             result = [VGG11_bnNet(is_pretrained=True), "VGG11_bn pretrained results"]
         elif setting_index == 3:
