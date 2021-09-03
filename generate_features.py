@@ -10,18 +10,17 @@ from torch.autograd import Variable as V
 import glob
 import helper
 from tqdm import tqdm
-'''
-This file is used to generate the features of the Neural Network from all stimuli
-Functions:
-preprocess_image : preprocessing an image for the neural network
-get_images : get the path for all images
-run_alexnet : generate the features for all images
 
 '''
-
+This file is used to generate the activation patterns of the Neural Network for all stimuli
+'''
 
 def preprocess_image(image):
-    """function to resize images"""
+    """
+    This function will resize the image into the correct input size for the network
+    :param image: Stimuli in its original size
+    :return: Stimuli in input format for network
+    """
     centre_crop = trn.Compose([
         trn.Resize((224, 224)),  # resize to 224 x 224 pixels
         trn.ToTensor(),  # transform to tensor
@@ -35,9 +34,13 @@ def preprocess_image(image):
 
 
 def get_images():
+    """
+    Function to gett all stimuli from the directory "stimuli_jpg"
+    :return: List with all stimulis inside
+    """
     """Return list of all stimuli"""
     path = "stimuli_jpg"
-    images = glob.glob(path + "/**/*.jpg", recursive=True) # list all files
+    images = glob.glob(path + "/**/*.jpg", recursive=True)  # list all files
     images.sort()
     return images
 
@@ -45,8 +48,11 @@ def get_images():
 def run_torchvision_model(model, result_path):
     """
     This function is used to run the Neural Network and save the features as .npz files
-    Runs all torchvision architectures
+    Runs all torchvision architectures.
+    :param model: loaded model
+    :param result_path: path where the resulst should be saved
     """
+
     if torch.cuda.is_available():
         model.cuda()
 

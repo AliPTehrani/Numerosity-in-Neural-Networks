@@ -3,6 +3,7 @@ import numpy as np
 from sklearn import linear_model
 import helper
 import matplotlib as mpl
+
 from matplotlib import pyplot as plt
 from scipy import stats
 import pandas as pd
@@ -10,6 +11,12 @@ from scipy.stats import spearmanr
 
 
 def evaluate_fmri_squared_correlation(layer_rdm, fmri_rdms):
+    """
+    This function is used to calculate the similaritie of an model layer rdm to fmri rdms using squared correlation R^2
+    :param layer_rdm: Layer RDM from the model
+    :param fmri_rdms: fmri RDMs for one brain region for all 20 subjects
+    :return: mean of R^2 correlation of layer rdm to all 20 subjects rdms, ttest significance
+    """
     corr = []
     layer_rdm = layer_rdm.reshape(-1, 1)
 
@@ -24,12 +31,17 @@ def evaluate_fmri_squared_correlation(layer_rdm, fmri_rdms):
 
 
 def spearman(rdm1, rdm2):
-    """Calculate Spearman"""
+    """Calculate Spearman correlation"""
     return spearmanr(rdm1, rdm2)[0]
 
 
 def evaluate_fmri_spearman_correlation(layer_rdm, fmri_rdms):
-
+    """
+    This function is used to calculate the spearman correlation between one layer RDM and 20 fmri ROI RDMs
+    :param layer_rdm: One layer RDM
+    :param fmri_rdms: RDMs for one ROI for 20 subjects
+    :return: Mean of the spearman correlation between layer RDM and all 20 subject RDMs
+    """
     corr = []
     for fmri_rdm in fmri_rdms:
         fmri_rdm = helper.remove_diagonal(helper.get_lower_triangular(fmri_rdm))
@@ -39,6 +51,11 @@ def evaluate_fmri_spearman_correlation(layer_rdm, fmri_rdms):
 
 
 def get_lowernoiseceiling_squared_correlation(rdm):
+    """
+    Calculates the lower noise ceilling value in one ROI for all 20 subjects using R^2 correlation from linear regression
+    :param rdm: 20 subject RDMs of one brain region
+    :return: lower noise ceilling value
+    """
     num_subs = rdm.shape[0]
     lnc = []
 
@@ -58,14 +75,11 @@ def get_lowernoiseceiling_squared_correlation(rdm):
 
 
 def get_lowernoiseceiling_spearman_correlation(rdm):
-
-    # Take the lower noise ceiling
-    # 1. Extracting one subject from the overall rdm
-    # 2. Take the mean of all the other RDMs
-    # 3. Take spearman correlation of subject RDM and mean subject RDM
-    # 4. We do this for all the subjects and then calculate the average
-    # => Can we predict person 15 from the rest of the subjects?
-    # => Low Noise-Ceiling means we need better data
+    """
+    Calculates the lower noise ceilling value in one ROI for all 20 subjects using spearman correlation from linear regression
+    :param rdm: 20 subject RDMs of one brain region
+    :return: lower noise ceilling value
+    """
     num_subs = rdm.shape[0]
     lnc = 0.0
     for i in range(num_subs):
@@ -80,6 +94,11 @@ def get_lowernoiseceiling_spearman_correlation(rdm):
     return lnc
 
 def get_uppernoiseceiling_squared_correlation(rdm):
+    """
+    Calculates the upper noise ceilling value in one ROI for all 20 subjects using R^2 correlation from linear regression
+    :param rdm: 20 subject RDMs of one brain region
+    :return: upper noise ceilling value
+    """
     num_subs = rdm.shape[0]
     unc = []
     for i in range(num_subs):
@@ -94,11 +113,11 @@ def get_uppernoiseceiling_squared_correlation(rdm):
     return unc
 
 def get_uppernoiseceiling_spearman_correlation(rdm):
-    #Calculate upper noise ceiling
-    #1. Take the mean of all RDMs without removing subjects
-    #2. Spearman of subject and average RDMs
-    #3. Average all of that
-    #=> How good are the RDMs generalized
+    """
+    Calculates the upper noise ceilling value in one ROI for all 20 subjects using spearman correlation from linear regression
+    :param rdm: 20 subject RDMs of one brain region
+    :return: upper noise ceilling value
+    """
     num_subs = rdm.shape[0]
     unc = 0.0
     for i in range(num_subs):
@@ -111,7 +130,11 @@ def get_uppernoiseceiling_spearman_correlation(rdm):
     return unc
 
 def get_noise_ceiling_fmri_spearman_correlation(target):
-    "Function to calculate noise ceilings for fmri scans"
+    """
+    Calculates lnc and unc for an given target using spearman correlation
+    :param target: dicitonary with ROI
+    :return: noise_ceilling : dictionary of lnc and unc values
+    """
 
     key_list = []
     for keys, values in target.items():
@@ -126,7 +149,11 @@ def get_noise_ceiling_fmri_spearman_correlation(target):
 
 
 def get_noise_ceiling_fmri_squared_correlation(target):
-    "Function to calculate noise ceilings for fmri scans"
+    """
+    Calculates lnc and unc for an given target using R2 correlation
+    :param target:
+    :return:
+    """
 
     key_list = []
     for keys, values in target.items():
@@ -172,7 +199,14 @@ def scan_result(out,noise_ceiling,squared):
     return output_dict
 
 def save_as_xlsx(result_dict, layer_names,save_path,squared=False):
-
+    """
+    Save the reults into an excel file
+    :param result_dict: Results of the noise ceilling
+    :param layer_names: Name of the layers/units of the model
+    :param save_path: Save path
+    :param squared: True = R2 from linear regression ; False = Spearman correlation
+    :return:
+    """
     brain_regions = ["IPS15", "V3ABV7", "V13", "IPS345", "IPS12", "IPS0", "V3AB", "V3", "V2", "V1"]
     brain_regions.reverse()
     data = []
@@ -259,6 +293,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path, square
         lnc_plot = axs[0].bar(x_label[x], lnc_y_values[x],color=colours[x])
         unc_plot = axs[1].bar(x_label[x], unc_y_values[x],color=colours[x])
 
+
     save_path_noise = save_path + sep + "Lower and upper noise ceilling"
     plt.savefig(save_path_noise)
     plt.close()
@@ -317,7 +352,7 @@ def visualize_noise_graph(result_dict,brain_region_noise_dict, save_path, square
 
 def noise_ceiling_main(option,network_save_path):
     """
-
+    Main function to run the noise ceilling calculations and visualization
     :param option: Integer from 0-2 representing the different task options : 0 - taskBoth, 1- taskNum , 2- taskSize
     :param network_save_path: direcotrie of the network e.g. "Alexnet pretrained results"
     :return: Nothing , creates multiple graphs into the directories network_save_path/RDM_Evaluation_Results/(Correlation method)

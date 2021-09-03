@@ -25,16 +25,20 @@ import helper as helper
 import generate_RDM as RDMs
 from tqdm import tqdm
 '''
-This file is used to run the main function.
+This file is used to run the User Interface in the console. It is also the main of this project.
 Structure:
-1.) Choose Model
+1.) Choose Model(s)
 2.) Generate features
 3.) Generate RDMs
 4.) Multiple regression
+5.) RSA comparing model and fmRI RDMs
+6.) Noise ceilling
+7.) Delete npz files to save space
 '''
 
 
 class Clear:
+    """Clear console"""
     def __call__(self):
         if os.name==('ce','nt','dos'): os.system('cls')
         elif os.name=='posix': os.system('clear')
@@ -54,6 +58,7 @@ def represents_int(s):
 
 
 def create_pretty_table_networks():
+    """Prints a table into the console with all networks that can be choosed"""
     print("Network Table:")
     p = PrettyTable(hrules=ALL)
 
@@ -72,7 +77,13 @@ def create_pretty_table_networks():
     last_row = (int(last_row))
     return [p, last_row]
 
+
 def create_pretty_table_network_configuration(ID):
+    """
+    Prints a table in the console with all network configurations for an chosen network type.
+    :param ID: ID of the network that was chosed before.
+    :return:
+    """
     p = PrettyTable(hrules=ALL)
     p.field_names = ["ID", "Architecture", "Pretrained/Random"]
     # ID 1 : Alexnet
@@ -132,6 +143,13 @@ def create_pretty_table_network_configuration(ID):
 
 
 def get_model_and_save_path(model_id,setting_id):
+    """
+    After the model and architecture setting were chosen with the two functions before the model will be loaded together
+    with its save path.
+    :param model_id: Type of model (Alexnet, VGG, Resnet, Cornet)
+    :param setting_id: Architecture of model (VGG-19 pretrained ... )
+    :return: loaded Model and save path for the results
+    """
     model_index = int(model_id) - 1
     setting_index = int(setting_id) - 1
 
@@ -225,7 +243,10 @@ def get_model_and_save_path(model_id,setting_id):
 
 
 def choose_model_main():
-
+    """
+    Function to structure the model choosing process.
+    :return: Loaded models and according save paths for evaluation results
+    """
     network_table = create_pretty_table_networks()
     last_row = network_table[1]
     network_table = network_table[0]
@@ -299,7 +320,10 @@ def choose_model_main():
 
 
 def generate_features_main(choosen_models):
-
+    """
+    Main function to structure the feature generation process
+    :param choosen_models: List of the loaded models and according save paths
+    """
     clear = Clear()
     ask_generate_features = input("Generate features ? Enter 1 for yes:")
 
@@ -316,7 +340,11 @@ def generate_features_main(choosen_models):
 
 
 def generate_rdms_main(choosen_model_info):
-
+    """
+    Function to structure the RDM generation process
+    :param choosen_model_info: Models and according save paths for the RDMs
+    :return:
+    """
 
     clear = Clear()
     list_of_subs = helper.get_sub_list()
@@ -335,7 +363,10 @@ def generate_rdms_main(choosen_model_info):
 
 
 def multiple_regression_main(choosen_model_info):
-
+    """
+    Function to structure the multiple regression process
+    :param choosen_model_info: Models and according save paths for the multiple regression graph
+    """
     clear = Clear()
 
     sep = helper.check_platform()
@@ -374,7 +405,11 @@ def multiple_regression_main(choosen_model_info):
 
 
 def rsa_heatmap_main(choosen_model_info):
-
+    """
+    Function to structure the RSA process. Comparing network and fmri data and visualize as heatmaps.
+    :param choosen_model_info: Models and according save paths for the heatmaps
+    :return:
+    """
     clear = Clear()
     create_rsa_heatmap = input("Create RSA (Brain RDMs vs Network RDMs)? Enter 1 for yes:")
 
@@ -407,7 +442,10 @@ def rsa_heatmap_main(choosen_model_info):
 
 
 def evaluate_noise_main(choosen_model_info):
-
+    """
+    Function to structure the noise ceilling process
+    :param choosen_model_info: Models and according save paths for the noise ceilling graphs
+    """
     clear = Clear()
     create_noise_ceiling = input("Perform noise ceiling? Enter 1 for yes:")
 
@@ -434,7 +472,7 @@ def evaluate_noise_main(choosen_model_info):
             Noise_RSA.noise_ceiling_main(choose_option,save_path)
 
 def main_ui():
-
+    """Main function for the complete User Interface"""
 
     # 1.) Choose Model
     choosen_models_info = choose_model_main()

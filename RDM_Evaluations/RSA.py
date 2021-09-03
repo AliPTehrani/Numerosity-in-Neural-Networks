@@ -75,7 +75,7 @@ def visualize_rsa_matrix(result_dict,layer_list, option,correlation):
         cbar = {'label': 'R2 Score from linear regression'}
     if correlation == 2:
         cbar = {'label': 'R Score from Spearman correlation'}
-    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno" #vmin=0  #vmax=1
+    heatmap = sns.heatmap(rsa_matrix, xticklabels=layers, yticklabels=brain_regions, cmap="inferno"
         ,cbar_kws = cbar)   #,cbar_kws={'label': 'Spearman correlation coefficient'}) #cbar_kws={'label': 'R2 Score from linear regression'})#
     heatmap.figure.axes[-1].yaxis.label.set_size(13)
 
@@ -84,7 +84,7 @@ def visualize_rsa_matrix(result_dict,layer_list, option,correlation):
 
 def create_rsa_matrix(option, result_path):
     """
-
+    Heatmap calculation
     :param option: Integer 0,1,2 representing the different options for the tasks taskBoth, taskNum , taskSize
     :param result_path: Path of the directory where the network results are stored e.g. "Alexnet pretrained results"
     :return: Nothing , creates a heatmap of the RSA in resultpath / results / (correlation method)

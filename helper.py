@@ -6,17 +6,14 @@ import os
 '''
 This file is used for variables or functions that are used all over the project.
 
-Implemented:
-sub_list : all subjects from 04 - 23
-test_cases : dictionary with all test cases , used to calculate average [value, frequency of testcase]
-check_platform : returns the separator of the current platform
-get_layers_ncondns : get information about the neural network
-load_npz : loads npz file
 '''
 
 
 def get_sub_list():
-
+    """
+    Returns a list where all subject names are stored
+    :return: list of all subjects
+    """
     sub_list = ["sub04", "sub05", "sub06", "sub07", "sub08", "sub09", "sub10", "sub11", "sub12", "sub13", "sub14",
                 "sub15", "sub16", "sub17", "sub18", "sub19", "sub20", "sub21", "sub22", "sub23"]
     return sub_list
@@ -87,6 +84,10 @@ def loadnpz(npzfile):
 
 
 def delete_files(result_paths):
+    """
+    Deletes all npz files from an given directory to save space on the device
+    :param result_paths: Path of the results where the npz files are located
+    """
     for result_path in result_paths:
         npz_files = glob.glob(result_path + "/**/*.npz", recursive=True)
         for npz_file in npz_files:

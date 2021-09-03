@@ -214,7 +214,7 @@ def multiple_regression_average_results(path):
     :param results_path: Path of the average RDMs
     :return: Nothing, saves the Plot in the same directory as the RDMs
     """
-    """Function to perform multiple regression on all values inside of the dictionary results_dict"""
+
     sep = helper.check_platform()
     save_path = path + sep + "RDM_Evaluation_Results"
     if not os.path.exists(save_path):

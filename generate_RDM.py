@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import helper
 import seaborn as sns
 
+'''
+This file is used to generate the RDMs of the Neural Network from all collected activation patterns
+'''
 
 def sum_tensors(all_tensors, x):
     """
@@ -117,7 +120,6 @@ def convert_arrays_to_layer(averaged_array_dict, layers):
     """
     This function converts the dictionary with averaged arrays (for every test case) into a dictionary for the layers
     """
-
     old_dict = averaged_array_dict
     new_dict = {}
     for i, key in enumerate(layers):
@@ -132,7 +134,7 @@ def convert_arrays_to_layer(averaged_array_dict, layers):
 
 def get_average_of_voxels(averaged_array_dict):
     """This function calculates the average for every unit of the "voxel" (2d part of tensor) """
-    # average_list = [[], [], [], [], [], [], [], []]
+
     average_list = []
     for layer in averaged_array_dict:
         average_list.append([])
